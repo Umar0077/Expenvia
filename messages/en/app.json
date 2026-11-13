@@ -1,0 +1,80 @@
+{
+  "app": {
+    "search": {
+      "open": "Search",
+      "hint": "Type at least 2 characters to search.",
+      "empty": "No matching records you have access to.",
+      "placeholder": {
+        "SUPER_ADMIN": "Search branches, people, vendors, records…",
+        "USER": "Search your expenses…",
+        "VENDOR": "Search your invoices and supplies…"
+      },
+      "kind": {
+        "branch": "Branch",
+        "employee": "Employee",
+        "vendor": "Vendor",
+        "expense": "Expense",
+        "invoice": "Invoice",
+        "supply": "Supply"
+      }
+    },
+    "notifications": {
+      "title": "Notifications",
+      "description": "Updates about records you are involved with.",
+      "markAllRead": "Mark all as read",
+      "markRead": "Mark as read",
+      "unread": "Unread",
+      "empty": "You're all caught up",
+      "emptyBody": "New updates about your records will appear here.",
+      "viewItem": "View",
+      "types": {
+        "registration_pending": "New {type, select, VENDOR {vendor} other {employee}} registration from {name} is awaiting review",
+        "account_approved": "Your account has been approved. Welcome to Expenvia!",
+        "account_infoRequested": "An administrator has requested more information about your registration",
+        "branch_assigned": "You have been assigned to {branch}",
+        "vendor_branchAssigned": "You can now supply {branch}",
+        "vendor_branchRemoved": "Your assignment to {branch} has ended",
+        "expense_submitted": "{name} submitted expense {number}",
+        "expense_approved": "Your expense {number} was approved",
+        "expense_rejected": "Your expense {number} was rejected",
+        "expense_revisionRequested": "Revision requested for your expense {number}",
+        "invoice_submitted": "{vendor} submitted invoice {number}",
+        "invoice_approved": "Your invoice {number} was approved",
+        "invoice_rejected": "Your invoice {number} was rejected",
+        "invoice_revisionRequested": "Revision requested for invoice {number}",
+        "invoice_paymentRecorded": "A payment was recorded for invoice {number}",
+        "account_rejected": "Your registration was not approved.",
+        "account_suspended": "Your account has been suspended.",
+        "account_reactivated": "Your account has been reactivated.",
+        "invoice_submissionConfirmed": "Invoice {number} was submitted.",
+        "invoice_paymentCorrected": "A payment entry for invoice {number} was corrected."
+      }
+    },
+    "money": {
+      "currency": "Currency"
+    },
+    "time": {
+      "justNow": "just now"
+    },
+    "pagination": {
+      "label": "Pagination",
+      "previous": "Previous",
+      "next": "Next",
+      "summary": "{from}–{to} of {total}"
+    },
+    "table": {
+      "noResults": "No records match these filters",
+      "noResultsBody": "Try adjusting or clearing your filters.",
+      "clearFilters": "Clear filters",
+      "all": "All"
+    },
+    "confirm": {
+      "title": "Are you sure?",
+      "irreversible": "This action is recorded in the audit log."
+    },
+    "toast": {
+      "saved": "Changes saved",
+      "error": "Something went wrong. Please try again."
+    }
+  }
+}

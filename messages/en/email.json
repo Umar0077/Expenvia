@@ -1,0 +1,48 @@
+{
+  "emailDelivery": {
+    "title": "Email delivery",
+    "description": "Monitor queued messages, provider acceptance, retries and development previews.",
+    "deliveryNotice": "Sent means accepted by the SMTP provider, not confirmed inbox delivery. Previewed messages are local development files and were not emailed. Security links and message bodies are never shown here.",
+    "total": "Total queued",
+    "refresh": "Refresh",
+    "retry": "Retry",
+    "retryQueued": "Retry queued",
+    "search": "Search recipient email",
+    "status": "Status",
+    "category": "Email category",
+    "from": "From date",
+    "to": "To date",
+    "id": "Message ID",
+    "recipient": "Recipient",
+    "created": "Created",
+    "attempts": "Attempts",
+    "lastAttempt": "Last attempt",
+    "nextAttempt": "Next attempt",
+    "actions": "Actions",
+    "details": "Delivery details",
+    "provider": "Provider",
+    "language": "Language",
+    "error": "Failure category",
+    "empty": "No email messages match these filters",
+    "statuses": {
+      "PENDING": "Pending",
+      "PROCESSING": "Processing",
+      "SENT": "SMTP accepted",
+      "RETRY_SCHEDULED": "Retry scheduled",
+      "FAILED": "Failed",
+      "PREVIEWED": "Previewed only",
+      "CANCELLED": "Cancelled"
+    },
+    "errors": {
+      "AUTHENTICATION": "SMTP authentication failed",
+      "RECIPIENT_OR_POLICY": "Recipient or provider policy rejected the message",
+      "RECIPIENT_REJECTED": "Recipient rejected",
+      "TEMPORARY_TRANSPORT": "Temporary connection or provider failure",
+      "TRANSPORT_FAILURE": "Transport failure",
+      "INVALID_HEADER": "Invalid message header",
+      "ATTEMPTS_EXHAUSTED": "Maximum attempts reached",
+      "PAYLOAD_OR_CONFIGURATION": "Message payload or configuration requires attention",
+      "NO_LONGER_ELIGIBLE": "Recipient, preference or security link is no longer eligible"
+    }
+  }
+}

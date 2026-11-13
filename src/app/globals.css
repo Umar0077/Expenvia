@@ -1,0 +1,348 @@
+@import "tailwindcss";
+
+/* Theme is driven by the `dark` class on <html> (set by next-themes before paint). */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ───────────── Expenvia semantic tokens ───────────── */
+:root {
+  --bg: #faf9f6;
+  --surface: #ffffff;
+  --surface-2: #f2f4ef;
+  --surface-sage: #e8ede6;
+  --surface-elevated: #ffffff;
+  --brand: #176b53;
+  --brand-hover: #125640;
+  --brand-fg: #ffffff;
+  --brand-soft: #e3efe9;
+  --text: #26342f;
+  --text-muted: #62706a;
+  --copper: #c47b56;
+  --copper-soft: #f6e9e1;
+  --border: #e2e7e0;
+  --border-strong: #cdd5cb;
+  --success: #287a55;
+  --success-soft: #e2f1e9;
+  --warning: #a76b25;
+  --warning-soft: #f7ecdc;
+  --danger: #b94b48;
+  --danger-soft: #f8e5e4;
+  --info: #3c6e80;
+  --info-soft: #e2edf1;
+  --focus: #176b53;
+  --shadow-color: 150 20% 20%;
+
+  /* chart palette — validated (dataviz validator): light surface, fixed order, never cycled.
+     emerald↔copper is a CVD-floor pair → multi-series charts always carry legend + direct labels. */
+  --chart-1: #16825f;
+  --chart-2: #d0743c;
+  --chart-3: #3a6fc4;
+  --chart-4: #a07c14;
+  --chart-grid: #e6eae4;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+
+  --sidebar-w: 256px;
+  --sidebar-w-collapsed: 76px;
+  --header-h: 64px;
+
+  color-scheme: light;
+}
+
+.dark {
+  --bg: #171f1c;
+  --surface: #202a25;
+  --surface-2: #23312b;
+  --surface-sage: #23312b;
+  --surface-elevated: #26332c;
+  --brand: #4ead88;
+  --brand-hover: #68c29d;
+  --brand-fg: #0f1a15;
+  --brand-soft: #1f3a2f;
+  --text: #e9eee9;
+  --text-muted: #abb9b0;
+  --copper: #d29a77;
+  --copper-soft: #3a2e26;
+  --border: #35453b;
+  --border-strong: #46594d;
+  --success: #5cbf8f;
+  --success-soft: #1f3a2d;
+  --warning: #d6a15c;
+  --warning-soft: #3b2f1f;
+  --danger: #e08380;
+  --danger-soft: #3d2423;
+  --info: #7fb3c6;
+  --info-soft: #1f3138;
+  --focus: #68c29d;
+  --shadow-color: 150 30% 4%;
+
+  /* dark steps validated against #202A25 surface */
+  --chart-1: #2a9e74;
+  --chart-2: #cf7a45;
+  --chart-3: #4f82d2;
+  --chart-4: #b08a2a;
+  --chart-grid: #2f3d35;
+
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-sage: var(--surface-sage);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-brand: var(--brand);
+  --color-brand-hover: var(--brand-hover);
+  --color-brand-fg: var(--brand-fg);
+  --color-brand-soft: var(--brand-soft);
+  --color-text: var(--text);
+  --color-muted: var(--text-muted);
+  --color-copper: var(--copper);
+  --color-copper-soft: var(--copper-soft);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+  --color-focus: var(--focus);
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  /* Inter first: it has no Arabic glyphs, so Latin text/digits use Inter and
+     Urdu script falls through to the Urdu fonts per glyph. */
+  --font-urdu: var(--font-inter), var(--font-urdu-ui), serif;
+  --font-urdu-display: var(--font-inter), var(--font-nastaliq), var(--font-urdu-ui), serif;
+
+  --shadow-card: 0 1px 2px hsl(var(--shadow-color) / 0.06), 0 1px 1px hsl(var(--shadow-color) / 0.04);
+  --shadow-raised: 0 8px 24px -8px hsl(var(--shadow-color) / 0.18), 0 2px 6px hsl(var(--shadow-color) / 0.06);
+  --shadow-overlay: 0 24px 48px -12px hsl(var(--shadow-color) / 0.28);
+}
+
+/* ───────────── Type scale (one source of truth) ─────────────
+   Semantic steps; Urdu redefines the same variables below with larger sizes
+   and taller lines because Arabic-script glyphs need more room. */
+@theme {
+  --text-2xs: 0.75rem;      --text-2xs--line-height: 1.05rem;   /* 12px  meta, axis, kbd */
+  --text-xs: 0.8125rem;     --text-xs--line-height: 1.2rem;     /* 13px  hints, captions */
+  --text-sm: 0.875rem;      --text-sm--line-height: 1.35rem;    /* 14px  labels, nav, tables */
+  --text-body: 0.9375rem;   --text-body--line-height: 1.55rem;  /* 15px  body copy, inputs */
+  --text-title: 1.0625rem;  --text-title--line-height: 1.45rem; /* 17px  card titles */
+  --text-section: 1.25rem;  --text-section--line-height: 1.7rem;/* 20px  section headings */
+  --text-page: 1.625rem;    --text-page--line-height: 2.1rem;   /* 26px  page headings (mobile) */
+  --text-page-lg: 1.875rem; --text-page-lg--line-height: 2.35rem;/* 30px page headings (≥sm) */
+  --text-metric: 1.625rem;  --text-metric--line-height: 2rem;   /* financial KPI values */
+}
+html[lang="ur"] {
+  --text-2xs: 0.8125rem;    --text-2xs--line-height: 1.5rem;
+  --text-xs: 0.875rem;      --text-xs--line-height: 1.65rem;
+  --text-sm: 0.9375rem;     --text-sm--line-height: 1.75rem;
+  --text-body: 1rem;        --text-body--line-height: 1.95rem;
+  --text-title: 1.125rem;   --text-title--line-height: 2rem;
+  --text-section: 1.3125rem;--text-section--line-height: 2.3rem;
+  --text-page: 1.625rem;    --text-page--line-height: 2.9rem;
+  --text-page-lg: 1.875rem; --text-page-lg--line-height: 3.2rem;
+}
+
+/* ───────────── Base ───────────── */
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    font-feature-settings: "cv11", "ss01";
+    -webkit-font-smoothing: antialiased;
+    min-height: 100dvh;
+  }
+  /* Urdu: Naskh-style UI font for controls and body, Nastaliq for headings. */
+  html[lang="ur"] body {
+    font-family: var(--font-urdu);
+  }
+  /* Latin-only data (emails, IDs, references, money) stays LTR inside RTL pages. */
+  .ltr-data {
+    direction: ltr;
+    unicode-bidi: isolate;
+    font-family: var(--font-sans);
+  }
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  ::selection {
+    background: color-mix(in oklab, var(--brand) 22%, transparent);
+  }
+}
+
+/* Unlayered on purpose: must beat Latin-tuned utilities (tight tracking, 1.05 leading)
+   that would make Nastaliq glyphs collide. Nastaliq needs tall lines and no tracking. */
+html[lang="ur"] :is(h1, h2, h3, .font-display) {
+  font-family: var(--font-urdu-display);
+  line-height: 1.75;
+  letter-spacing: 0;
+  font-weight: 600;
+}
+html[lang="ur"] .marketing h1 {
+  font-size: clamp(1.9rem, 1.2rem + 2.6vw, 3rem);
+}
+html[lang="ur"] .marketing h2 {
+  font-size: clamp(1.45rem, 1.1rem + 1.4vw, 2.1rem);
+}
+
+@utility tabular {
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings: "tnum", "lnum";
+}
+
+@utility surface-card {
+  background: linear-gradient(155deg, color-mix(in srgb, var(--surface-elevated) 96%, var(--brand) 4%), var(--surface) 65%);
+  border: 1px solid color-mix(in srgb, var(--border) 85%, var(--brand) 15%);
+  border-radius: 18px;
+  box-shadow: var(--atelier-elevation-1);
+}
+
+/* Users who pick "reduced" in settings get the same treatment as the OS preference. */
+html[data-motion="reduced"] *,
+html[data-motion="reduced"] *::before,
+html[data-motion="reduced"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  html:not([data-motion="full"]) *,
+  html:not([data-motion="full"]) *::before,
+  html:not([data-motion="full"]) *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Print: invoices and reports */
+@media print {
+  :root, .dark {
+    --bg: #fff;
+    --surface: #fff;
+    --text: #1d2925;
+    --text-muted: #4f5b56;
+    --border: #d5dbd3;
+  }
+  body { background: #fff !important; }
+  .no-print { display: none !important; }
+}
+
+/* ═════════════ Expenvia Ambient Emerald Flow ═════════════
+   Compositor-only motion (transform/opacity). Colors are theme tokens,
+   tuned separately so neither theme glows or washes out text. */
+:root {
+  --amb-emerald: rgb(23 107 83 / 0.15);
+  --amb-sage: rgb(168 200 178 / 0.34);
+  --amb-copper: rgb(196 123 86 / 0.13);
+  --amb-deep: rgb(18 86 64 / 0.10);
+  --amb-mesh: rgb(23 107 83 / 0.07);
+}
+.dark {
+  --amb-emerald: rgb(78 173 136 / 0.13);
+  --amb-sage: rgb(52 88 70 / 0.42);
+  --amb-copper: rgb(210 154 119 / 0.09);
+  --amb-deep: rgb(104 194 157 / 0.06);
+  --amb-mesh: rgb(233 238 233 / 0.035);
+}
+
+.ambient {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  contain: strict;
+}
+.ambient-layer { position: absolute; inset: -8%; will-change: transform; }
+.ambient-blob {
+  position: absolute;
+  border-radius: 9999px;
+  /* Blur is rasterized once; transform animation then only re-composites it. */
+  filter: blur(36px);
+  will-change: transform;
+  animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+.ambient-blob--a { width: 62%; aspect-ratio: 1.25; top: -18%; inset-inline-start: -8%;
+  background: radial-gradient(closest-side, var(--amb-emerald), transparent 72%); animation-name: amb-drift-a; animation-duration: 26s; }
+.ambient-blob--b { width: 55%; aspect-ratio: 1.1; top: 10%; inset-inline-end: -12%;
+  background: radial-gradient(closest-side, var(--amb-sage), transparent 70%); animation-name: amb-drift-b; animation-duration: 32s; }
+.ambient-blob--c { width: 26%; aspect-ratio: 1; top: 42%; inset-inline-start: 46%;
+  background: radial-gradient(closest-side, var(--amb-copper), transparent 70%); animation-name: amb-drift-c; animation-duration: 21s; }
+.ambient-blob--d { width: 48%; aspect-ratio: 1.4; bottom: -30%; inset-inline-start: 18%;
+  background: radial-gradient(closest-side, var(--amb-deep), transparent 72%); animation-name: amb-drift-b; animation-duration: 38s; animation-delay: -12s; }
+.ambient-mesh {
+  position: absolute; inset: -40px;
+  background-image:
+    linear-gradient(to right, var(--amb-mesh) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--amb-mesh) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 35%, black, transparent 75%);
+  animation: amb-mesh 40s linear infinite alternate;
+  will-change: transform;
+}
+@keyframes amb-drift-a { from { transform: translate3d(0,0,0) scale(1); } 50% { transform: translate3d(7%,5%,0) scale(1.08); } to { transform: translate3d(-3%,9%,0) scale(0.96); } }
+@keyframes amb-drift-b { from { transform: translate3d(0,0,0) scale(1.04); } 50% { transform: translate3d(-8%,6%,0) scale(0.95); } to { transform: translate3d(-2%,-6%,0) scale(1.06); } }
+@keyframes amb-drift-c { from { transform: translate3d(0,0,0) scale(0.9); opacity: 0.55; } 50% { transform: translate3d(-14%,-10%,0) scale(1.12); opacity: 1; } to { transform: translate3d(10%,-4%,0) scale(1); opacity: 0.7; } }
+@keyframes amb-mesh { from { transform: translate3d(0,0,0); } to { transform: translate3d(22px,22px,0); } }
+
+/* Intensity per surface */
+.ambient[data-variant="auth"] { opacity: 0.8; }
+.ambient[data-variant="auth"] .ambient-blob { animation-duration: 40s; }
+.ambient[data-variant="app"] { opacity: 0.55; }
+.ambient[data-variant="app"] .ambient-blob { animation-duration: 55s; }
+.ambient[data-variant="app"] .ambient-blob--c { opacity: 0.5; }
+.ambient[data-variant="static"] { opacity: 0.5; }
+.ambient[data-variant="static"] .ambient-blob,
+.ambient[data-variant="static"] .ambient-mesh { animation: none; }
+/* Brand panel on auth pages is dark in both themes → fixed palette */
+.ambient[data-variant="panel"] {
+  --amb-emerald: rgb(78 173 136 / 0.32);
+  --amb-sage: rgb(104 194 157 / 0.12);
+  --amb-copper: rgb(210 154 119 / 0.22);
+  --amb-deep: rgb(20 60 46 / 0.6);
+  --amb-mesh: rgb(255 255 255 / 0.06);
+}
+
+/* Pause when off-screen or the tab is hidden; freeze for reduced motion */
+.ambient[data-paused] .ambient-blob, .ambient[data-paused] .ambient-mesh,
+html[data-tab-hidden] .ambient-blob, html[data-tab-hidden] .ambient-mesh { animation-play-state: paused; }
+html[data-motion="reduced"] .ambient-blob, html[data-motion="reduced"] .ambient-mesh { animation: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  html:not([data-motion="full"]) .ambient-blob, html:not([data-motion="full"]) .ambient-mesh { animation: none !important; }
+}
+
+/* Interactive cards: one consistent hover language */
+@utility card-interactive {
+  transition: border-color 200ms, box-shadow 200ms, transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+  &:hover { border-color: var(--border-strong); box-shadow: var(--shadow-raised); transform: translateY(-1px); }
+}
+
+/* Grid/flex children may shrink below their content width (fixes mobile overflow
+   from charts, long amounts and tables inside single-column grids). Zero specificity. */
+:where(.grid) > * { min-width: 0; }

@@ -1,0 +1,907 @@
+{
+  "results": [
+    {
+      "locale": "en",
+      "theme": "light",
+      "width": 320,
+      "overflow": false,
+      "fontSize": 35.2,
+      "fontWeight": "700",
+      "clipped": [],
+      "lineCounts": [
+        1,
+        1,
+        1
+      ],
+      "columnsOverlap": false,
+      "chartContained": true,
+      "previewOpacity": "1",
+      "panelBackground": "rgb(255, 255, 255)",
+      "bars": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "width": 360,
+      "overflow": false,
+      "fontSize": 35.2,
+      "fontWeight": "700",
+      "clipped": [],
+      "lineCounts": [
+        1,
+        1,
+        1
+      ],
+      "columnsOverlap": false,
+      "chartContained": true,
+      "previewOpacity": "1",
+      "panelBackground": "rgb(255, 255, 255)",
+      "bars": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "fontSize": 35.49,
+      "fontWeight": "700",
+      "clipped": [],
+      "lineCounts": [
+        1,
+        1,
+        1
+      ],
+      "columnsOverlap": false,
+      "chartContained": true,
+      "previewOpacity": "1",
+      "panelBackground": "rgb(255, 255, 255)",
+      "bars": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "width": 430,
+      "overflow": false,
+      "fontSize": 39.13,
+      "fontWeight": "700",
+      "clipped": [],
+      "lineCounts": [
+        1,
+        1,
+        1
+      ],
+      "columnsOverlap": false,
+      "chartContained": true,
+      "previewOpacity": "1",
+      "panelBackground": "rgb(255, 255, 255)",
+      "bars": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "width": 768,
+      "overflow": false,
+      "fontSize": 52.224,
+      "fontWeight": "700",
+      "clipped": [],
+      "lineCounts": [
+        1,
+        1,
+        1
+      ],
+      "columnsOverlap": false,
+      "chartContained": true,
+      "previewOpacity": "1",
+      "panelBackground": "rgb(255, 255, 255)",
+      "bars": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "width": 1024,
+      "overflow": false,
+      "fontSize": 57.6,
+      "fontWeight": "700",
+      "clipped": [],
+      "lineCounts": [
+        1,
+        1,
+        1
+      ],
+      "columnsOverlap": false,
+      "chartContained": true,
+      "previewOpacity": "1",
+      "panelBackground": "rgb(255, 255, 255)",
+      "bars": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "width": 1280,
+      "overflow": false,
+      "fontSize": 64.64,
+      "fontWeight": "700",
+      "clipped": [],
+      "lineCounts": [
+        1,
+        1,
+        1
+      ],
+      "columnsOverlap": false,
+      "chartContained": true,
+      "previewOpacity": "1",
+      "panelBackground": "rgb(255, 255, 255)",
+      "bars": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "fontSize": 72,
+      "fontWeight": "700",
+      "clipped": [],
+      "lineCounts": [
+        1,
+        1,
+        1
+      ],
+      "columnsOverlap": false,
+      "chartContained": true,
+      "previewOpacity": "1",
+      "panelBackground": "rgb(255, 255, 255)",
+      "bars": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "width": 1920,
+      "overflow": false,
+      "fontSize": 72,
+      "fontWeight": "700",
+      "clipped": [],
+      "lineCounts": [
+        1,
+        1,
+        1
+      ],
+      "columnsOverlap": false,
+      "chartContained": true,
+      "previewOpacity": "1",
+      "panelBackground": "rgb(255, 255, 255)",
+      "bars": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "width": 320,
+      "overflow": false,
+      "fontSize": 35.2,
+      "fontWeight": "700",
+      "clipped": [],
+      "lineCounts": [
+        1,
+        1,
+        1
+      ],
+      "columnsOverlap": false,
+      "chartContained": true,
+      "previewOpacity": "1",
+      "panelBackground": "rgb(38, 51, 44)",
+      "bars": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "width": 360,
+      "overflow": false,
+      "fontSize": 35.2,
+      "fontWeight": "700",
+      "clipped": [],
+      "lineCounts": [
+        1,
+        1,
+        1
+      ],
+      "columnsOverlap": false,
+      "chartContained": true,
+      "previewOpacity": "1",
+      "panelBackground": "rgb(38, 51, 44)",
+      "bars": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "fontSize": 35.49,
+      "fontWeight": "700",
+      "clipped": [],
+      "lineCounts": [
+        1,
+        1,
+        1
+      ],
+      "columnsOverlap": false,
+      "chartContained": true,
+      "previewOpacity": "1",
+      "panelBackground": "rgb(38, 51, 44)",
+      "bars": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "width": 430,
+      "overflow": false,
+      "fontSize": 39.13,
+      "fontWeight": "700",
+      "clipped": [],
+      "lineCounts": [
+        1,
+        1,
+        1
+      ],
+      "columnsOverlap": false,
+      "chartContained": true,
+      "previewOpacity": "1",
+      "panelBackground": "rgb(38, 51, 44)",
+      "bars": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "width": 768,
+      "overflow": false,
+      "fontSize": 52.224,
+      "fontWeight": "700",
+      "clipped": [],
+      "lineCounts": [
+        1,
+        1,
+        1
+      ],
+      "columnsOverlap": false,
+      "chartContained": true,
+      "previewOpacity": "1",
+      "panelBackground": "rgb(38, 51, 44)",
+      "bars": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "width": 1024,
+      "overflow": false,
+      "fontSize": 57.6,
+      "fontWeight": "700",
+      "clipped": [],
+      "lineCounts": [
+        1,
+        1,
+        1
+      ],
+      "columnsOverlap": false,
+      "chartContained": true,
+      "previewOpacity": "1",
+      "panelBackground": "rgb(38, 51, 44)",
+      "bars": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "width": 1280,
+      "overflow": false,
+      "fontSize": 64.64,
+      "fontWeight": "700",
+      "clipped": [],
+      "lineCounts": [
+        1,
+        1,
+        1
+      ],
+      "columnsOverlap": false,
+      "chartContained": true,
+      "previewOpacity": "1",
+      "panelBackground": "rgb(38, 51, 44)",
+      "bars": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "fontSize": 72,
+      "fontWeight": "700",
+      "clipped": [],
+      "lineCounts": [
+        1,
+        1,
+        1
+      ],
+      "columnsOverlap": false,
+      "chartContained": true,
+      "previewOpacity": "1",
+      "panelBackground": "rgb(38, 51, 44)",
+      "bars": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "width": 1920,
+      "overflow": false,
+      "fontSize": 72,
+      "fontWeight": "700",
+      "clipped": [],
+      "lineCounts": [
+        1,
+        1,
+        1
+      ],
+      "columnsOverlap": false,
+      "chartContained": true,
+      "previewOpacity": "1",
+      "panelBackground": "rgb(38, 51, 44)",
+      "bars": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "locale": "ur",
+      "theme": "light",
+      "width": 320,
+      "overflow": false,
+      "fontSize": 44,
+      "fontWeight": "600",
+      "clipped": [],
+      "lineCounts": [
+        2
+      ],
+      "columnsOverlap": false,
+      "chartContained": true,
+      "previewOpacity": "1",
+      "panelBackground": "rgb(255, 255, 255)",
+      "bars": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "locale": "ur",
+      "theme": "light",
+      "width": 360,
+      "overflow": false,
+      "fontSize": 44,
+      "fontWeight": "600",
+      "clipped": [],
+      "lineCounts": [
+        2
+      ],
+      "columnsOverlap": false,
+      "chartContained": true,
+      "previewOpacity": "1",
+      "panelBackground": "rgb(255, 255, 255)",
+      "bars": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "locale": "ur",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "fontSize": 44,
+      "fontWeight": "600",
+      "clipped": [],
+      "lineCounts": [
+        2
+      ],
+      "columnsOverlap": false,
+      "chartContained": true,
+      "previewOpacity": "1",
+      "panelBackground": "rgb(255, 255, 255)",
+      "bars": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "locale": "ur",
+      "theme": "light",
+      "width": 430,
+      "overflow": false,
+      "fontSize": 44,
+      "fontWeight": "600",
+      "clipped": [],
+      "lineCounts": [
+        2
+      ],
+      "columnsOverlap": false,
+      "chartContained": true,
+      "previewOpacity": "1",
+      "panelBackground": "rgb(255, 255, 255)",
+      "bars": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "locale": "ur",
+      "theme": "light",
+      "width": 768,
+      "overflow": false,
+      "fontSize": 44,
+      "fontWeight": "600",
+      "clipped": [],
+      "lineCounts": [
+        1
+      ],
+      "columnsOverlap": false,
+      "chartContained": true,
+      "previewOpacity": "1",
+      "panelBackground": "rgb(255, 255, 255)",
+      "bars": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "locale": "ur",
+      "theme": "light",
+      "width": 1024,
+      "overflow": false,
+      "fontSize": 49.152,
+      "fontWeight": "600",
+      "clipped": [],
+      "lineCounts": [
+        2
+      ],
+      "columnsOverlap": false,
+      "chartContained": true,
+      "previewOpacity": "1",
+      "panelBackground": "rgb(255, 255, 255)",
+      "bars": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "locale": "ur",
+      "theme": "light",
+      "width": 1280,
+      "overflow": false,
+      "fontSize": 61.44,
+      "fontWeight": "600",
+      "clipped": [],
+      "lineCounts": [
+        2
+      ],
+      "columnsOverlap": false,
+      "chartContained": true,
+      "previewOpacity": "1",
+      "panelBackground": "rgb(255, 255, 255)",
+      "bars": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "locale": "ur",
+      "theme": "light",
+      "width": 1440,
+      "overflow": false,
+      "fontSize": 69.12,
+      "fontWeight": "600",
+      "clipped": [],
+      "lineCounts": [
+        2
+      ],
+      "columnsOverlap": false,
+      "chartContained": true,
+      "previewOpacity": "1",
+      "panelBackground": "rgb(255, 255, 255)",
+      "bars": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "locale": "ur",
+      "theme": "light",
+      "width": 1920,
+      "overflow": false,
+      "fontSize": 70,
+      "fontWeight": "600",
+      "clipped": [],
+      "lineCounts": [
+        2
+      ],
+      "columnsOverlap": false,
+      "chartContained": true,
+      "previewOpacity": "1",
+      "panelBackground": "rgb(255, 255, 255)",
+      "bars": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "locale": "ur",
+      "theme": "dark",
+      "width": 320,
+      "overflow": false,
+      "fontSize": 44,
+      "fontWeight": "600",
+      "clipped": [],
+      "lineCounts": [
+        2
+      ],
+      "columnsOverlap": false,
+      "chartContained": true,
+      "previewOpacity": "1",
+      "panelBackground": "rgb(38, 51, 44)",
+      "bars": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "locale": "ur",
+      "theme": "dark",
+      "width": 360,
+      "overflow": false,
+      "fontSize": 44,
+      "fontWeight": "600",
+      "clipped": [],
+      "lineCounts": [
+        2
+      ],
+      "columnsOverlap": false,
+      "chartContained": true,
+      "previewOpacity": "1",
+      "panelBackground": "rgb(38, 51, 44)",
+      "bars": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "locale": "ur",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "fontSize": 44,
+      "fontWeight": "600",
+      "clipped": [],
+      "lineCounts": [
+        2
+      ],
+      "columnsOverlap": false,
+      "chartContained": true,
+      "previewOpacity": "1",
+      "panelBackground": "rgb(38, 51, 44)",
+      "bars": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "locale": "ur",
+      "theme": "dark",
+      "width": 430,
+      "overflow": false,
+      "fontSize": 44,
+      "fontWeight": "600",
+      "clipped": [],
+      "lineCounts": [
+        2
+      ],
+      "columnsOverlap": false,
+      "chartContained": true,
+      "previewOpacity": "1",
+      "panelBackground": "rgb(38, 51, 44)",
+      "bars": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "locale": "ur",
+      "theme": "dark",
+      "width": 768,
+      "overflow": false,
+      "fontSize": 44,
+      "fontWeight": "600",
+      "clipped": [],
+      "lineCounts": [
+        1
+      ],
+      "columnsOverlap": false,
+      "chartContained": true,
+      "previewOpacity": "1",
+      "panelBackground": "rgb(38, 51, 44)",
+      "bars": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "locale": "ur",
+      "theme": "dark",
+      "width": 1024,
+      "overflow": false,
+      "fontSize": 49.152,
+      "fontWeight": "600",
+      "clipped": [],
+      "lineCounts": [
+        2
+      ],
+      "columnsOverlap": false,
+      "chartContained": true,
+      "previewOpacity": "1",
+      "panelBackground": "rgb(38, 51, 44)",
+      "bars": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "locale": "ur",
+      "theme": "dark",
+      "width": 1280,
+      "overflow": false,
+      "fontSize": 61.44,
+      "fontWeight": "600",
+      "clipped": [],
+      "lineCounts": [
+        2
+      ],
+      "columnsOverlap": false,
+      "chartContained": true,
+      "previewOpacity": "1",
+      "panelBackground": "rgb(38, 51, 44)",
+      "bars": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "locale": "ur",
+      "theme": "dark",
+      "width": 1440,
+      "overflow": false,
+      "fontSize": 69.12,
+      "fontWeight": "600",
+      "clipped": [],
+      "lineCounts": [
+        2
+      ],
+      "columnsOverlap": false,
+      "chartContained": true,
+      "previewOpacity": "1",
+      "panelBackground": "rgb(38, 51, 44)",
+      "bars": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "locale": "ur",
+      "theme": "dark",
+      "width": 1920,
+      "overflow": false,
+      "fontSize": 70,
+      "fontWeight": "600",
+      "clipped": [],
+      "lineCounts": [
+        2
+      ],
+      "columnsOverlap": false,
+      "chartContained": true,
+      "previewOpacity": "1",
+      "panelBackground": "rgb(38, 51, 44)",
+      "bars": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ]
+    }
+  ],
+  "opacitySamples": 80,
+  "minimumEntranceOpacity": 1,
+  "errors": []
+}

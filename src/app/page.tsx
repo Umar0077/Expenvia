@@ -1,0 +1,194 @@
+import Link from "next/link";
+import "./landing-refinement.css";
+import "@/components/landing/executive-landing.css";
+import { getTranslations } from "next-intl/server";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  BarChart3,
+  Building2,
+  CreditCard,
+  FileSpreadsheet,
+  GitMerge,
+  KeyRound,
+  Languages,
+  ListChecks,
+  Lock,
+  ScrollText,
+  ShieldCheck,
+} from "lucide-react";
+import { ExpenviaLogo } from "@/components/brand/logo";
+import { Button } from "@/components/ui/button";
+import { LanguageSwitcher } from "@/components/preferences/language-switcher";
+import { ExecutiveAppBar } from "@/components/landing/executive-app-bar";
+import { HeroEntrance } from "@/components/landing/hero-entrance";
+import { HeroVisual } from "@/components/landing/hero-visual";
+import { BranchNetwork } from "@/components/landing/branch-network";
+import { AmbientBackground } from "@/components/ambient/ambient-background";
+import { Magnetic, Reveal, ScrollProgress, StaggerGroup, StaggerItem } from "@/components/landing/motion-bits";
+import { SignatureContourCard, SignatureContourIcon } from "@/components/landing/signature-contour-card";
+import { WorkflowJourney } from "@/components/landing/workflow-journey";
+
+export default async function LandingPage() {
+  const t = await getTranslations("landing");
+  const tc = await getTranslations("common");
+
+  const caps = [
+    { title: t("cap1"), body: t("cap1Body"), icon: Building2 },
+    { title: t("cap2"), body: t("cap2Body"), icon: FileSpreadsheet },
+    { title: t("cap3"), body: t("cap3Body"), icon: ListChecks },
+    { title: t("cap4"), body: t("cap4Body"), icon: CreditCard },
+    { title: t("cap5"), body: t("cap5Body"), icon: GitMerge },
+    { title: t("cap6"), body: t("cap6Body"), icon: BarChart3 },
+  ];
+  const security = [
+    { text: t("sec1"), icon: Lock },
+    { text: t("sec2"), icon: ScrollText },
+    { text: t("sec3"), icon: KeyRound },
+    { text: t("sec4"), icon: ShieldCheck },
+  ];
+
+  return (
+    <div className="marketing executive-landing">
+      <ScrollProgress />
+      <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-[70] focus:rounded-md focus:bg-surface focus:px-4 focus:py-2">
+        {tc("skipToContent")}
+      </a>
+
+      <ExecutiveAppBar />
+
+      <main id="main">
+        {/* HERO */}
+        <section className="landing-hero relative overflow-hidden">
+          <AmbientBackground variant="hero" />
+          <div className="executive-hero-layout relative z-10 mx-auto grid max-w-7xl px-4 sm:px-6 lg:grid-cols-[1.05fr_1fr] lg:px-8">
+            <div className="executive-hero-copy">
+              <HeroEntrance>
+                <p className="hero-eyebrow inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium text-muted">
+                  <span className="size-1.5 rounded-full bg-copper" />
+                  {t("eyebrow")}
+                </p>
+              </HeroEntrance>
+              <HeroEntrance delay={0.08} fade={false}>
+                <h1 className="hero-headline font-display mt-6 text-balance text-4xl font-semibold tracking-[-0.03em] text-text sm:text-5xl lg:text-[3.6rem] lg:leading-[1.05]">
+                  {t("heroTitle").split(/(?<=\.)\s+/).map((line, index) => <span className="executive-headline-line" key={index}>{index > 0 && " "}{line}</span>)}
+                </h1>
+              </HeroEntrance>
+              <HeroEntrance delay={0.16}>
+                <p className="hero-description mt-6 max-w-xl text-pretty text-lg leading-relaxed text-muted">{t("heroBody")}</p>
+              </HeroEntrance>
+              <HeroEntrance delay={0.24} className="executive-hero-actions flex flex-wrap items-center gap-3">
+                <Magnetic>
+                  <Button asChild size="lg">
+                    <Link href="/signup">
+                      {t("ctaPrimary")} <ArrowRight className="rtl:-scale-x-100" />
+                    </Link>
+                  </Button>
+                </Magnetic>
+                <Button asChild size="lg" variant="secondary">
+                  <a href="#workflow">{t("ctaSecondary")}</a>
+                </Button>
+              </HeroEntrance>
+            </div>
+            <HeroVisual />
+          </div>
+        </section>
+
+        {/* WORKFLOW */}
+        <WorkflowJourney />
+
+        {/* CAPABILITIES */}
+        <section id="capabilities" className="landing-capabilities scroll-mt-20">
+          <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+            <Reveal className="max-w-2xl">
+              <h2 className="font-display text-3xl font-semibold tracking-[-0.02em] sm:text-4xl">{t("capTitle")}</h2>
+            </Reveal>
+            <StaggerGroup className="capability-grid mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {caps.map((c, i) => (
+                <StaggerItem key={c.title}>
+                  <SignatureContourCard className={`capability-card capability-${i + 1} group h-full`}>
+                    <div className="capability-top"><SignatureContourIcon>
+                      <c.icon className="size-5" />
+                    </SignatureContourIcon><span className="capability-index" aria-hidden="true">0{i + 1}</span></div>
+                    <h3 className="mt-7 text-section font-semibold tracking-tight">{c.title}</h3>
+                    <p className="mt-3 text-body leading-relaxed text-muted">{c.body}</p>
+                    <div className="capability-detail" aria-hidden="true"><span/><span/><span/><span/><ArrowUpRight className="size-4 rtl:-scale-x-100"/></div>
+                  </SignatureContourCard>
+                </StaggerItem>
+              ))}
+            </StaggerGroup>
+          </div>
+        </section>
+
+        {/* BRANCHES */}
+        <section id="branches" className="landing-branches">
+          <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-4 py-20 sm:px-6 lg:grid-cols-[.85fr_1.15fr] lg:px-8 lg:py-24">
+            <Reveal>
+              <h2 className="font-display text-3xl font-semibold tracking-[-0.02em] sm:text-4xl">{t("branchesTitle")}</h2>
+              <p className="mt-4 max-w-lg text-lg leading-relaxed text-muted">{t("branchesBody")}</p>
+            </Reveal>
+            <Reveal delay={0.1} className="branch-atlas">
+              <BranchNetwork />
+            </Reveal>
+          </div>
+        </section>
+
+        {/* SECURITY + LANGUAGE */}
+        <section id="security" className="scroll-mt-20">
+          <div className="mx-auto grid max-w-7xl gap-6 px-4 py-20 sm:px-6 lg:grid-cols-[1.4fr_1fr] lg:px-8 lg:py-28">
+            <Reveal className="surface-card p-8">
+              <h2 className="font-display text-2xl font-semibold tracking-[-0.02em] sm:text-3xl">{t("securityTitle")}</h2>
+              <ul className="mt-8 grid gap-5 sm:grid-cols-2">
+                {security.map((s) => (
+                  <li key={s.text} className="flex gap-3">
+                    <s.icon className="mt-0.5 size-5 shrink-0 text-brand" />
+                    <span className="text-sm leading-relaxed text-muted">{s.text}</span>
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
+            <Reveal delay={0.1} className="surface-card atelier-brand-panel flex flex-col justify-between p-8 !border-brand">
+              <Languages className="size-7 opacity-90" />
+              <div className="mt-10">
+                <h2 className="font-display text-2xl font-semibold">{t("langTitle")}</h2>
+                <p className="mt-3 text-sm leading-relaxed opacity-85">{t("langBody")}</p>
+                <p lang="ur" dir="rtl" className="mt-6 text-2xl leading-[2.2]" style={{ fontFamily: "var(--font-nastaliq)" }}>
+                  ہر برانچ۔ ہر خرچ۔
+                </p>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+
+        {/* CLOSING */}
+        <section className="px-4 pb-24 sm:px-6 lg:px-8">
+          <Reveal className="relative mx-auto max-w-5xl overflow-hidden rounded-[var(--radius-xl)] border border-border bg-surface px-6 py-16 text-center sm:px-12">
+            <AmbientBackground variant="auth" />
+            <h2 className="font-display relative z-10 text-balance text-3xl font-semibold tracking-[-0.02em] sm:text-4xl">{t("closingTitle")}</h2>
+            <p className="relative z-10 mx-auto mt-4 max-w-xl text-muted">{t("closingBody")}</p>
+            <div className="relative z-10 mt-8 flex flex-wrap justify-center gap-3">
+              <Magnetic>
+                <Button asChild size="lg">
+                  <Link href="/signup">{t("getStarted")}</Link>
+                </Button>
+              </Magnetic>
+              <Button asChild size="lg" variant="secondary">
+                <Link href="/login">{t("signIn")}</Link>
+              </Button>
+            </div>
+          </Reveal>
+        </section>
+      </main>
+
+      <footer className="border-t border-border">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 py-8 text-sm text-muted sm:flex-row sm:px-6 lg:px-8">
+          <ExpenviaLogo size="footer" />
+          <p>
+            © <span className="tabular">{new Date().getFullYear()}</span> {t("footerRights")}
+          </p>
+          <LanguageSwitcher className="sm:hidden" />
+        </div>
+      </footer>
+    </div>
+  );
+}

@@ -1,0 +1,49 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+import { motion, useAnimationControls, useInView, useMotionValue, useTransform } from "motion/react";
+import { useLocale, useTranslations } from "next-intl";
+import { CheckCircle2, FileText, ArrowUpRight, ChartNoAxesCombined } from "lucide-react";
+import { useReducedMotion } from "@/components/motion/use-reduced-motion";
+import { useAuroraDepth } from "@/components/ambient/living-aurora";
+import { HeroReveal } from "./hero-copy";
+import "./hero-visual.css";
+
+const BARS = [62, 78, 54, 88, 71, 94];
+const BRANCHES = [{ code: "LHR", width: 86 }, { code: "KHI", width: 72 }, { code: "ISB", width: 51 }, { code: "FSD", width: 34 }];
+
+function AnimatedHeroChart() {
+  const controls = useAnimationControls(), played = useRef(false);
+  const reduced = useReducedMotion();
+  useEffect(() => {
+    if (reduced) { controls.stop(); controls.set({ scaleY: 1 }); return; }
+    if (played.current) return;
+    played.current = true;
+    void controls.start(i => ({ scaleY: [.25, 1], transition: { duration: .7, delay: .65 + i * .06, ease: [.22, 1, .36, 1] } }));
+  }, [controls, reduced]);
+  return <div className="preview-chart" aria-hidden="true"><div className="preview-chart-grid" />{BARS.map((height, i) => <motion.div key={i} custom={i} initial={false} animate={controls} className="preview-bar" style={{ height: `${height}%`, opacity: .65 + i * .06 }} />)}<svg viewBox="0 0 500 120" preserveAspectRatio="none"><path d="M0 105 C40 102 50 65 95 72 S165 100 210 58 S280 78 325 36 S390 60 435 22 S475 30 500 9" fill="none" stroke="var(--copper)" strokeWidth="2" vectorEffect="non-scaling-stroke" /></svg></div>;
+}
+
+export function HeroVisual() {
+  const t = useTranslations("landing"), tc = useTranslations("common");
+  const locale = useLocale();
+  const reduced = useReducedMotion();
+  const ref = useRef<HTMLDivElement>(null), visible = useInView(ref, { margin: "60px" });
+  const depth = useAuroraDepth(), zero = useMotionValue(0);
+  const x = useTransform(depth?.x ?? zero, n => n * .24), y = useTransform(depth?.y ?? zero, n => n * .2);
+  return <motion.div ref={ref} className="hero-financial-preview" data-static={reduced} data-paused={!visible} style={reduced ? undefined : { x, y }} dir={locale === "ur" ? "rtl" : "ltr"}>
+    <HeroReveal delay={.42} className="preview-main-entrance"><div className="preview-dashboard">
+      <div className="preview-window"><span className="preview-window-dots" aria-hidden="true"><i /><i /><i /></span><span>{tc("illustrative")}</span><ChartNoAxesCombined size={16} aria-hidden="true" /></div>
+      <div className="preview-metrics">{[{ label: t("mockTotal"), value: "PKR 4.82M" }, { label: t("mockPending"), value: "17" }, { label: t("mockOutstanding"), value: "PKR 1.26M" }].map((metric, i) => <HeroReveal key={metric.label} delay={.48 + i * .06}><div className={`preview-metric preview-metric-${i}`}><p>{metric.label}</p><strong className="ltr-data tabular" dir="ltr">{metric.value}</strong></div></HeroReveal>)}</div>
+      <div className="preview-chart-heading"><span>{t("mockTotal")}</span><ArrowUpRight size={15} aria-hidden="true" /></div>
+      <AnimatedHeroChart />
+      <div className="preview-chart-footer"><span>{t("heroChartCaption")}</span><span className="preview-period" dir="ltr">01 — 06</span></div>
+    </div></HeroReveal>
+    <HeroReveal delay={.78} className="preview-invoice-position"><div className="preview-invoice preview-float">
+      <span className="preview-invoice-icon"><FileText size={21} /></span><div><p className="ltr-data preview-reference" dir="ltr">EXP-INV-2026-000128</p><p className="preview-approved"><CheckCircle2 size={14} />{t("mockApproved")}</p></div>
+    </div></HeroReveal>
+    <HeroReveal delay={.64} className="preview-branch-position"><div className="preview-branch preview-float">
+      <p>{t("mockByBranch")}</p><div className="preview-branch-list">{BRANCHES.map((branch, i) => <div key={branch.code}><span className="ltr-data" dir="ltr">{branch.code}</span><span className="preview-branch-track"><i style={{ width: `${branch.width}%`, background: i === 0 ? "var(--copper)" : "var(--brand)" }} /></span></div>)}</div>
+    </div></HeroReveal>
+  </motion.div>;
+}

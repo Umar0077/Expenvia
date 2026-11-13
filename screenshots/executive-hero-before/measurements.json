@@ -1,0 +1,58 @@
+[
+  {
+    "locale": "en",
+    "theme": "light",
+    "width": 1440,
+    "hero": 744,
+    "header": 96
+  },
+  {
+    "locale": "en",
+    "theme": "light",
+    "width": 390,
+    "hero": 997.40625,
+    "header": 80
+  },
+  {
+    "locale": "en",
+    "theme": "dark",
+    "width": 1440,
+    "hero": 744,
+    "header": 96
+  },
+  {
+    "locale": "en",
+    "theme": "dark",
+    "width": 390,
+    "hero": 997.40625,
+    "header": 80
+  },
+  {
+    "locale": "ur",
+    "theme": "light",
+    "width": 1440,
+    "hero": 744,
+    "header": 96
+  },
+  {
+    "locale": "ur",
+    "theme": "light",
+    "width": 390,
+    "hero": 1073.25,
+    "header": 80
+  },
+  {
+    "locale": "ur",
+    "theme": "dark",
+    "width": 1440,
+    "hero": 744,
+    "header": 96
+  },
+  {
+    "locale": "ur",
+    "theme": "dark",
+    "width": 390,
+    "hero": 1073.25,
+    "header": 80
+  }
+]

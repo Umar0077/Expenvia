@@ -1,0 +1,12 @@
+{
+  "src/components/landing/executive-app-bar.tsx": "9553f0038632b21c5208d7348e3a7b1c6724957699ab0a122891ac424fbc3cb0",
+  "src/components/brand/logo.tsx": "45b9274287808f6e71b41d15b137fe7fa957668c8ee66b464188dadac4e0f155",
+  "src/app/urdu-typography.css": "0b6090c0ff537fbcce8fa2b68297fa344f367580e303f8fb579aefad92b65ec4",
+  "src/components/landing/signature-contour-card.tsx": "11c44b889aca442e1163b553bfe875e15ce8f92ffba0d5845a3269087fc5750e",
+  "src/components/landing/workflow-journey.tsx": "8d3cda07a0b48c38e52381d4c9f310d0cbee458213fcee2146dc44d8ebba7bc5",
+  "src/components/landing/workflow-journey.css": "31493e4cf87fa1abab84dfaaf70bc1f287028c9b5a93b84ceadd5054144a332f",
+  "src/components/landing/branch-network.tsx": "157df96bf2a6fca19cbacaeff48d6d4a9458da07ea6ce38d55325bbb373de050",
+  "src/components/ambient/ambient-background.tsx": "c15094b16f2855c9827498cf529ca69e2649a3ec6bdd6989b169b6d87fbd6418",
+  "src/app/landing-refinement.css": "bb667ecd23de7d7a8880d9e64a23e3d20258cfa42e3c578cb07e7809adc39749",
+  "src/app/atelier.css": "d386ddf5a1811fe27c35aaa37f9c9b109ac3d982b9cc6db981f96c918ea85898"
+}

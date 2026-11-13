@@ -1,0 +1,668 @@
+// Expenvia — PostgreSQL schema
+// Money: NUMERIC(18,4) internally, rounded to currency precision (2) at line/invoice level.
+// Times: timestamptz (UTC). All PKs are UUIDs.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ───────────────────────── Enums ─────────────────────────
+
+enum Role {
+  SUPER_ADMIN
+  USER
+  VENDOR
+}
+
+enum AccountStatus {
+  PENDING_VERIFICATION
+  PENDING_APPROVAL
+  INFO_REQUESTED
+  ACTIVE
+  REJECTED
+  SUSPENDED
+}
+
+enum RequestedAccountType {
+  USER
+  VENDOR
+}
+
+enum RegistrationStatus {
+  PENDING
+  INFO_REQUESTED
+  APPROVED
+  REJECTED
+}
+
+enum BranchStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum ExpenseStatus {
+  DRAFT
+  SUBMITTED
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
+  REVISION_REQUESTED
+}
+
+enum InvoiceStatus {
+  DRAFT
+  SUBMITTED
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
+  REVISION_REQUESTED
+  PARTIALLY_PAID
+  PAID
+}
+
+enum PaymentEntryType {
+  PAYMENT
+  CORRECTION // compensating entry (negative or positive) — never overwrite history
+}
+
+enum ReconciliationType {
+  DUPLICATE_OF // employee expense duplicates a vendor invoice → excluded from approved totals
+  RELATED // informational link only
+}
+
+enum AuditOutcome {
+  SUCCESS
+  FAILURE
+  DENIED
+}
+
+enum ThemePreference {
+  LIGHT
+  DARK
+  SYSTEM
+}
+
+enum MotionPreference {
+  FULL
+  REDUCED
+  SYSTEM
+}
+
+enum Locale {
+  en
+  ur
+}
+
+enum TokenPurpose {
+  EMAIL_VERIFICATION
+  PASSWORD_RESET
+}
+
+// ───────────────────────── Identity ─────────────────────────
+
+model User {
+  emailMessages        EmailOutbox[]
+  id               String        @id @default(uuid()) @db.Uuid
+  email            String        @unique
+  emailVerifiedAt  DateTime?     @map("email_verified_at") @db.Timestamptz
+  passwordHash     String        @map("password_hash")
+  fullName         String        @map("full_name")
+  phone            String?
+  avatarKey        String?       @map("avatar_key")
+  role             Role?         // null until approved
+  status           AccountStatus @default(PENDING_VERIFICATION)
+  createdAt        DateTime      @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt        DateTime      @updatedAt @map("updated_at") @db.Timestamptz
+
+  sessions            Session[]
+  tokens              AuthToken[]
+  registration        RegistrationRequest?  @relation("Applicant")
+  reviewedRequests    RegistrationRequest[] @relation("Reviewer")
+  branchAssignments   UserBranchAssignment[] @relation("AssignedUser")
+  assignmentsMade     UserBranchAssignment[] @relation("AssignedBy")
+  vendorProfile       VendorProfile?
+  expenses            Expense[]             @relation("ExpenseOwner")
+  reviewedExpenses    Expense[]             @relation("ExpenseReviewer")
+  notifications       Notification[]
+  preferences         UserPreference?
+  auditLogs           AuditLog[]
+  branchesCreated     Branch[]
+  categoriesCreated   ExpenseCategory[]
+  expenseHistory      ExpenseStatusHistory[]
+  invoiceHistory      InvoiceStatusHistory[]
+  paymentsRecorded    InvoicePayment[]
+  reconciliations     FinancialReconciliation[]
+  vendorAssignmentsMade VendorBranchAssignment[]
+  settingsChanged     SystemSetting[]
+
+  @@index([status])
+  @@index([role])
+  @@map("users")
+}
+
+model Session {
+  id          String    @id @default(uuid()) @db.Uuid
+  userId      String    @map("user_id") @db.Uuid
+  tokenHash   String    @unique @map("token_hash") // SHA-256 of the cookie token; raw token never stored
+  userAgent   String?   @map("user_agent")
+  ipAddress   String?   @map("ip_address")
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  lastSeenAt  DateTime  @default(now()) @map("last_seen_at") @db.Timestamptz
+  expiresAt   DateTime  @map("expires_at") @db.Timestamptz
+  revokedAt   DateTime? @map("revoked_at") @db.Timestamptz
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("sessions")
+}
+
+model AuthToken {
+  id         String       @id @default(uuid()) @db.Uuid
+  userId     String       @map("user_id") @db.Uuid
+  purpose    TokenPurpose
+  tokenHash  String       @unique @map("token_hash")
+  expiresAt  DateTime     @map("expires_at") @db.Timestamptz
+  usedAt     DateTime?    @map("used_at") @db.Timestamptz
+  createdAt  DateTime     @default(now()) @map("created_at") @db.Timestamptz
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, purpose])
+  @@map("auth_tokens")
+}
+
+model RateLimitBucket {
+  key        String   @id
+  count      Int
+  windowEnds DateTime @map("window_ends") @db.Timestamptz
+
+  @@map("rate_limit_buckets")
+}
+
+model RegistrationRequest {
+  id             String               @id @default(uuid()) @db.Uuid
+  userId         String               @unique @map("user_id") @db.Uuid
+  requestedType  RequestedAccountType @map("requested_type")
+  status         RegistrationStatus   @default(PENDING)
+  businessName   String?              @map("business_name")
+  businessAddress String?             @map("business_address")
+  businessCategory String?            @map("business_category")
+  taxIdentifier  String?              @map("tax_identifier")
+  applicantNote  String?              @map("applicant_note")
+  reviewNote     String?              @map("review_note") // internal — never shown to applicant
+  publicMessage  String?              @map("public_message") // optional message shown to applicant
+  termsAcceptedAt DateTime            @map("terms_accepted_at") @db.Timestamptz
+  reviewedById   String?              @map("reviewed_by_id") @db.Uuid
+  reviewedAt     DateTime?            @map("reviewed_at") @db.Timestamptz
+  createdAt      DateTime             @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt      DateTime             @updatedAt @map("updated_at") @db.Timestamptz
+
+  user       User  @relation("Applicant", fields: [userId], references: [id], onDelete: Cascade)
+  reviewedBy User? @relation("Reviewer", fields: [reviewedById], references: [id])
+
+  @@index([status, createdAt])
+  @@map("registration_requests")
+}
+
+// ───────────────────────── Organization ─────────────────────────
+
+model Branch {
+  id            String       @id @default(uuid()) @db.Uuid
+  code          String       @unique
+  name          String
+  address       String?
+  city          String
+  country       String
+  contactEmail  String?      @map("contact_email")
+  contactPhone  String?      @map("contact_phone")
+  secondaryPhone String?     @map("secondary_phone")
+  workingDays   String?      @map("working_days")
+  opensAt       String?      @map("opens_at")
+  closesAt      String?      @map("closes_at")
+  timezone      String?
+  managerName   String?      @map("manager_name")
+  status        BranchStatus @default(ACTIVE)
+  createdById   String       @map("created_by_id") @db.Uuid
+  createdAt     DateTime     @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt     DateTime     @updatedAt @map("updated_at") @db.Timestamptz
+
+  createdBy          User                     @relation(fields: [createdById], references: [id])
+  userAssignments    UserBranchAssignment[]
+  vendorAssignments  VendorBranchAssignment[]
+  expenses           Expense[]
+  invoices           Invoice[]
+  supplyRecords      VendorSupplyRecord[]
+  auditLogs          AuditLog[]
+
+  @@index([status])
+  @@map("branches")
+}
+
+/// History-preserving: one row per assignment period. Active = endedAt IS NULL.
+/// A partial unique index (migration) guarantees one active branch per user.
+model UserBranchAssignment {
+  id          String    @id @default(uuid()) @db.Uuid
+  userId      String    @map("user_id") @db.Uuid
+  branchId    String    @map("branch_id") @db.Uuid
+  assignedById String   @map("assigned_by_id") @db.Uuid
+  startedAt   DateTime  @default(now()) @map("started_at") @db.Timestamptz
+  endedAt     DateTime? @map("ended_at") @db.Timestamptz
+
+  user       User   @relation("AssignedUser", fields: [userId], references: [id])
+  branch     Branch @relation(fields: [branchId], references: [id])
+  assignedBy User   @relation("AssignedBy", fields: [assignedById], references: [id])
+
+  @@index([userId, endedAt])
+  @@index([branchId])
+  @@map("user_branch_assignments")
+}
+
+model VendorProfile {
+  id               String   @id @default(uuid()) @db.Uuid
+  userId           String   @unique @map("user_id") @db.Uuid
+  businessName     String   @map("business_name")
+  contactPerson    String   @map("contact_person")
+  businessEmail    String   @map("business_email")
+  businessPhone    String?  @map("business_phone")
+  businessAddress  String?  @map("business_address")
+  businessCategory String?  @map("business_category")
+  taxIdentifier    String?  @map("tax_identifier")
+  paymentDetails   String?  @map("payment_details")
+  createdAt        DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt        DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  user              User                     @relation(fields: [userId], references: [id])
+  branchAssignments VendorBranchAssignment[]
+  supplyRecords     VendorSupplyRecord[]
+  invoices          Invoice[]
+
+  @@map("vendor_profiles")
+}
+
+/// History-preserving. Active = removedAt IS NULL. Partial unique index in migration.
+model VendorBranchAssignment {
+  id           String    @id @default(uuid()) @db.Uuid
+  vendorId     String    @map("vendor_id") @db.Uuid
+  branchId     String    @map("branch_id") @db.Uuid
+  assignedById String    @map("assigned_by_id") @db.Uuid
+  assignedAt   DateTime  @default(now()) @map("assigned_at") @db.Timestamptz
+  removedAt    DateTime? @map("removed_at") @db.Timestamptz
+
+  vendor     VendorProfile @relation(fields: [vendorId], references: [id])
+  branch     Branch        @relation(fields: [branchId], references: [id])
+  assignedBy User          @relation(fields: [assignedById], references: [id])
+
+  @@index([vendorId, removedAt])
+  @@index([branchId])
+  @@map("vendor_branch_assignments")
+}
+
+// ───────────────────────── Expenses ─────────────────────────
+
+model ExpenseCategory {
+  id          String   @id @default(uuid()) @db.Uuid
+  key         String   @unique // stable slug used for translation lookup
+  nameEn      String   @map("name_en")
+  nameUr      String   @map("name_ur")
+  isActive    Boolean  @default(true) @map("is_active")
+  createdById String?  @map("created_by_id") @db.Uuid
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  createdBy User?     @relation(fields: [createdById], references: [id])
+  expenses  Expense[]
+
+  @@map("expense_categories")
+}
+
+model Expense {
+  id              String        @id @default(uuid()) @db.Uuid
+  number          String        @unique // EXP-EXP-2026-000001
+  ownerId         String        @map("owner_id") @db.Uuid
+  branchId        String        @map("branch_id") @db.Uuid // frozen at creation; never follows reassignment
+  categoryId      String        @map("category_id") @db.Uuid
+  title           String
+  description     String?
+  amount          Decimal       @db.Decimal(18, 2)
+  currency        String        @default("PKR") @db.Char(3)
+  expenseDate     DateTime      @map("expense_date") @db.Date
+  payeeName       String?       @map("payee_name")
+  paymentMethod   String?       @map("payment_method")
+  referenceNumber String?       @map("reference_number")
+  status          ExpenseStatus @default(DRAFT)
+  submittedAt     DateTime?     @map("submitted_at") @db.Timestamptz
+  reviewedById    String?       @map("reviewed_by_id") @db.Uuid
+  reviewedAt      DateTime?     @map("reviewed_at") @db.Timestamptz
+  reviewNote      String?       @map("review_note")
+  version         Int           @default(1) // optimistic concurrency
+  createdAt       DateTime      @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt       DateTime      @updatedAt @map("updated_at") @db.Timestamptz
+
+  owner           User                      @relation("ExpenseOwner", fields: [ownerId], references: [id])
+  branch          Branch                    @relation(fields: [branchId], references: [id])
+  category        ExpenseCategory           @relation(fields: [categoryId], references: [id])
+  reviewedBy      User?                     @relation("ExpenseReviewer", fields: [reviewedById], references: [id])
+  attachments     ExpenseAttachment[]
+  history         ExpenseStatusHistory[]
+  reconciliations FinancialReconciliation[]
+
+  @@index([ownerId, status])
+  @@index([branchId, status])
+  @@index([status, submittedAt])
+  @@index([expenseDate])
+  @@map("expenses")
+}
+
+model ExpenseAttachment {
+  id          String   @id @default(uuid()) @db.Uuid
+  expenseId   String   @map("expense_id") @db.Uuid
+  storageKey  String   @unique @map("storage_key") // generated; never user-supplied
+  fileName    String   @map("file_name")
+  mimeType    String   @map("mime_type")
+  sizeBytes   Int      @map("size_bytes")
+  sha256      String
+  uploadedAt  DateTime @default(now()) @map("uploaded_at") @db.Timestamptz
+
+  expense Expense @relation(fields: [expenseId], references: [id], onDelete: Restrict)
+
+  @@index([expenseId])
+  @@map("expense_attachments")
+}
+
+model ExpenseStatusHistory {
+  id         String         @id @default(uuid()) @db.Uuid
+  expenseId  String         @map("expense_id") @db.Uuid
+  fromStatus ExpenseStatus? @map("from_status")
+  toStatus   ExpenseStatus  @map("to_status")
+  actorId    String         @map("actor_id") @db.Uuid
+  note       String?
+  createdAt  DateTime       @default(now()) @map("created_at") @db.Timestamptz
+
+  expense Expense @relation(fields: [expenseId], references: [id])
+  actor   User    @relation(fields: [actorId], references: [id])
+
+  @@index([expenseId, createdAt])
+  @@map("expense_status_history")
+}
+
+// ───────────────────────── Vendor invoicing ─────────────────────────
+
+model VendorSupplyRecord {
+  id          String   @id @default(uuid()) @db.Uuid
+  vendorId    String   @map("vendor_id") @db.Uuid
+  branchId    String   @map("branch_id") @db.Uuid
+  supplyDate  DateTime @map("supply_date") @db.Date
+  itemName    String   @map("item_name")
+  description String?
+  quantity    Decimal  @db.Decimal(18, 4)
+  unit        String
+  unitPrice   Decimal  @map("unit_price") @db.Decimal(18, 4)
+  taxRate     Decimal  @default(0) @map("tax_rate") @db.Decimal(7, 4) // percent, e.g. 17.0000
+  discount    Decimal  @default(0) @db.Decimal(18, 2) // absolute amount
+  notes       String?
+  invoiceId   String?  @map("invoice_id") @db.Uuid // set once billed
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  vendor  VendorProfile @relation(fields: [vendorId], references: [id])
+  branch  Branch        @relation(fields: [branchId], references: [id])
+  invoice Invoice?      @relation(fields: [invoiceId], references: [id])
+
+  @@index([vendorId, branchId])
+  @@index([invoiceId])
+  @@map("vendor_supply_records")
+}
+
+/// Invoice numbers come from the invoice_number_seq Postgres sequence (concurrency-safe).
+model Invoice {
+  id             String        @id @default(uuid()) @db.Uuid
+  number         String        @unique
+  vendorId       String        @map("vendor_id") @db.Uuid
+  branchId       String        @map("branch_id") @db.Uuid
+  currency       String        @default("PKR") @db.Char(3)
+  invoiceDate    DateTime      @map("invoice_date") @db.Date
+  supplyDate     DateTime?     @map("supply_date") @db.Date
+  dueDate        DateTime?     @map("due_date") @db.Date
+  notes          String?
+  paymentTerms   String?       @map("payment_terms")
+  paymentDetails String?       @map("payment_details")
+  subtotal       Decimal       @default(0) @db.Decimal(18, 2)
+  discountTotal  Decimal       @default(0) @map("discount_total") @db.Decimal(18, 2)
+  taxTotal       Decimal       @default(0) @map("tax_total") @db.Decimal(18, 2)
+  grandTotal     Decimal       @default(0) @map("grand_total") @db.Decimal(18, 2)
+  amountPaid     Decimal       @default(0) @map("amount_paid") @db.Decimal(18, 2)
+  status         InvoiceStatus @default(DRAFT)
+  submittedAt    DateTime?     @map("submitted_at") @db.Timestamptz
+  approvedAt     DateTime?     @map("approved_at") @db.Timestamptz
+  reviewNote     String?       @map("review_note")
+  revisionOfId   String?       @map("revision_of_id") @db.Uuid // revised version chain
+  snapshot       Json?         // immutable copy of header+lines captured at submission
+  version        Int           @default(1)
+  createdAt      DateTime      @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt      DateTime      @updatedAt @map("updated_at") @db.Timestamptz
+
+  vendor          VendorProfile             @relation(fields: [vendorId], references: [id])
+  branch          Branch                    @relation(fields: [branchId], references: [id])
+  revisionOf      Invoice?                  @relation("InvoiceRevisions", fields: [revisionOfId], references: [id])
+  revisions       Invoice[]                 @relation("InvoiceRevisions")
+  lineItems       InvoiceLineItem[]
+  history         InvoiceStatusHistory[]
+  payments        InvoicePayment[]
+  supplyRecords   VendorSupplyRecord[]
+  reconciliations FinancialReconciliation[]
+
+  @@index([vendorId, status])
+  @@index([branchId, status])
+  @@index([invoiceDate])
+  @@index([status, submittedAt])
+  @@map("invoices")
+}
+
+model InvoiceLineItem {
+  id          String  @id @default(uuid()) @db.Uuid
+  invoiceId   String  @map("invoice_id") @db.Uuid
+  position    Int
+  itemName    String  @map("item_name")
+  description String?
+  quantity    Decimal @db.Decimal(18, 4)
+  unit        String
+  unitPrice   Decimal @map("unit_price") @db.Decimal(18, 4)
+  taxRate     Decimal @default(0) @map("tax_rate") @db.Decimal(7, 4)
+  discount    Decimal @default(0) @db.Decimal(18, 2)
+  lineSubtotal Decimal @map("line_subtotal") @db.Decimal(18, 2) // qty × price, rounded
+  lineTax     Decimal @map("line_tax") @db.Decimal(18, 2)
+  lineTotal   Decimal @map("line_total") @db.Decimal(18, 2)
+
+  invoice Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  @@unique([invoiceId, position])
+  @@map("invoice_line_items")
+}
+
+model InvoiceStatusHistory {
+  id         String         @id @default(uuid()) @db.Uuid
+  invoiceId  String         @map("invoice_id") @db.Uuid
+  fromStatus InvoiceStatus? @map("from_status")
+  toStatus   InvoiceStatus  @map("to_status")
+  actorId    String         @map("actor_id") @db.Uuid
+  note       String?
+  createdAt  DateTime       @default(now()) @map("created_at") @db.Timestamptz
+
+  invoice Invoice @relation(fields: [invoiceId], references: [id])
+  actor   User    @relation(fields: [actorId], references: [id])
+
+  @@index([invoiceId, createdAt])
+  @@map("invoice_status_history")
+}
+
+/// Append-only. Corrections are new rows with entryType=CORRECTION.
+model InvoicePayment {
+  id              String           @id @default(uuid()) @db.Uuid
+  invoiceId       String           @map("invoice_id") @db.Uuid
+  entryType       PaymentEntryType @default(PAYMENT) @map("entry_type")
+  amount          Decimal          @db.Decimal(18, 2)
+  paymentDate     DateTime         @map("payment_date") @db.Date
+  method          String?
+  reference       String?
+  notes           String?
+  proofKey        String?          @map("proof_key")
+  correctsId      String?          @map("corrects_id") @db.Uuid
+  idempotencyKey  String           @unique @map("idempotency_key")
+  recordedById    String           @map("recorded_by_id") @db.Uuid
+  createdAt       DateTime         @default(now()) @map("created_at") @db.Timestamptz
+
+  invoice    Invoice         @relation(fields: [invoiceId], references: [id])
+  recordedBy User            @relation(fields: [recordedById], references: [id])
+  corrects   InvoicePayment? @relation("PaymentCorrections", fields: [correctsId], references: [id])
+  correctedBy InvoicePayment[] @relation("PaymentCorrections")
+
+  @@index([invoiceId])
+  @@index([paymentDate])
+  @@map("invoice_payments")
+}
+
+/// Links an employee expense to a vendor invoice so reporting never double-counts.
+model FinancialReconciliation {
+  id         String             @id @default(uuid()) @db.Uuid
+  expenseId  String             @map("expense_id") @db.Uuid
+  invoiceId  String             @map("invoice_id") @db.Uuid
+  type       ReconciliationType
+  note       String?
+  linkedById String             @map("linked_by_id") @db.Uuid
+  createdAt  DateTime           @default(now()) @map("created_at") @db.Timestamptz
+  unlinkedAt DateTime?          @map("unlinked_at") @db.Timestamptz
+
+  expense  Expense @relation(fields: [expenseId], references: [id])
+  invoice  Invoice @relation(fields: [invoiceId], references: [id])
+  linkedBy User    @relation(fields: [linkedById], references: [id])
+
+  @@index([expenseId])
+  @@index([invoiceId])
+  @@map("financial_reconciliations")
+}
+
+// ───────────────────────── Platform ─────────────────────────
+
+model Notification {
+  id         String    @id @default(uuid()) @db.Uuid
+  userId     String    @map("user_id") @db.Uuid
+  type       String    // translation key, e.g. "expense.approved"
+  params     Json?     // safe interpolation params only (numbers, own-record titles)
+  entityType String?   @map("entity_type")
+  entityId   String?   @map("entity_id") @db.Uuid
+  href       String?
+  readAt     DateTime? @map("read_at") @db.Timestamptz
+  createdAt  DateTime  @default(now()) @map("created_at") @db.Timestamptz
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, readAt, createdAt])
+  @@map("notifications")
+}
+
+/// Append-only (enforced by trigger in migration).
+model AuditLog {
+  id         String       @id @default(uuid()) @db.Uuid
+  actorId    String?      @map("actor_id") @db.Uuid
+  actorRole  Role?        @map("actor_role")
+  action     String
+  entityType String?      @map("entity_type")
+  entityId   String?      @map("entity_id")
+  branchId   String?      @map("branch_id") @db.Uuid
+  outcome    AuditOutcome @default(SUCCESS)
+  summary    Json?        // before/after summary (never secrets)
+  requestId  String?      @map("request_id")
+  ipAddress  String?      @map("ip_address")
+  userAgent  String?      @map("user_agent")
+  createdAt  DateTime     @default(now()) @map("created_at") @db.Timestamptz
+
+  actor  User?   @relation(fields: [actorId], references: [id])
+  branch Branch? @relation(fields: [branchId], references: [id])
+
+  @@index([createdAt])
+  @@index([actorId, createdAt])
+  @@index([action, createdAt])
+  @@index([branchId, createdAt])
+  @@index([entityType, entityId])
+  @@map("audit_logs")
+}
+
+model UserPreference {
+  emailExpenseUpdates   Boolean          @default(true) @map("email_expense_updates")
+  emailInvoiceUpdates   Boolean          @default(true) @map("email_invoice_updates")
+  emailBranchUpdates    Boolean          @default(true) @map("email_branch_updates")
+  emailActivityUpdates  Boolean          @default(true) @map("email_activity_updates")
+  userId                String           @id @map("user_id") @db.Uuid
+  theme                 ThemePreference  @default(SYSTEM)
+  locale                Locale           @default(en)
+  motion                MotionPreference @default(SYSTEM)
+  notifyExpenseUpdates  Boolean          @default(true) @map("notify_expense_updates")
+  notifyInvoiceUpdates  Boolean          @default(true) @map("notify_invoice_updates")
+  notifyAccountUpdates  Boolean          @default(true) @map("notify_account_updates")
+  updatedAt             DateTime         @updatedAt @map("updated_at") @db.Timestamptz
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_preferences")
+}
+
+enum EmailStatus {
+  PENDING
+  PROCESSING
+  SENT
+  RETRY_SCHEDULED
+  FAILED
+  PREVIEWED
+  CANCELLED
+}
+
+model EmailOutbox {
+  id                String      @id @default(uuid()) @db.Uuid
+  idempotencyKey    String      @unique @map("idempotency_key")
+  eventType         String      @map("event_type")
+  template          String
+  userId            String      @map("user_id") @db.Uuid
+  user              User        @relation(fields: [userId], references: [id], onDelete: Restrict)
+  recipient         String
+  language          Locale      @default(en)
+  entityType        String?     @map("entity_type")
+  entityId          String?     @map("entity_id")
+  authTokenId       String?     @map("auth_token_id") @db.Uuid
+  payload           String?     // AES-256-GCM encrypted; purged on terminal success/cancellation
+  status            EmailStatus @default(PENDING)
+  attempts          Int         @default(0)
+  maxAttempts       Int         @default(5) @map("max_attempts")
+  manualRetries     Int         @default(0) @map("manual_retries")
+  nextAttemptAt     DateTime    @default(now()) @map("next_attempt_at") @db.Timestamptz
+  createdAt         DateTime    @default(now()) @map("created_at") @db.Timestamptz
+  lastAttemptAt     DateTime?   @map("last_attempt_at") @db.Timestamptz
+  sentAt            DateTime?   @map("sent_at") @db.Timestamptz
+  completedAt       DateTime?   @map("completed_at") @db.Timestamptz
+  lockedUntil       DateTime?   @map("locked_until") @db.Timestamptz
+  claimId           String?     @map("claim_id") @db.Uuid
+  errorCategory     String?     @map("error_category")
+  provider          String?
+  providerReference String?     @map("provider_reference")
+
+  @@index([status, nextAttemptAt])
+  @@index([createdAt])
+  @@index([userId])
+  @@map("email_outbox")
+}
+
+model SystemSetting {
+  key         String   @id
+  value       Json
+  updatedById String?  @map("updated_by_id") @db.Uuid
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  updatedBy User? @relation(fields: [updatedById], references: [id])
+
+  @@map("system_settings")
+}

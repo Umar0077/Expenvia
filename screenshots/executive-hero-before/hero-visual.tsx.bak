@@ -1,0 +1,54 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+import { motion, useAnimationControls, useInView, useMotionTemplate, useMotionValue } from "motion/react";
+import { useTranslations } from "next-intl";
+import { CheckCircle2, Clock3, FileText } from "lucide-react";
+import { duration, ease } from "@/lib/motion";
+import { useReducedMotion } from "@/components/motion/use-reduced-motion";
+import { HeroEntrance } from "./hero-entrance";
+
+// Same illustrative figures and dashboard concept; never business data.
+const BARS = [62, 78, 54, 88, 71, 94];
+const BRANCHES = [{ code: "LHR", w: 86 }, { code: "KHI", w: 72 }, { code: "ISB", w: 51 }, { code: "FSD", w: 34 }];
+
+export function HeroVisual() {
+  const t = useTranslations("landing"), tc = useTranslations("common");
+  const reduced = useReducedMotion(), ref = useRef<HTMLDivElement>(null);
+  const visible = useInView(ref, { margin: "60px" });
+  const bars = useAnimationControls(), played = useRef(false);
+  const mx = useMotionValue(50), my = useMotionValue(40);
+  const spotlight = useMotionTemplate`radial-gradient(420px circle at ${mx}% ${my}%, color-mix(in oklab, var(--brand) 14%, transparent), transparent 70%)`;
+  useEffect(() => {
+    if (reduced) { bars.stop(); bars.set({ scaleY: 1 }); return; }
+    if (!visible || played.current) return;
+    played.current = true;
+    void bars.start(index => ({ scaleY: [.2, 1], transition: { duration: duration.hero, ease: ease.out, delay: .25 + index * .06 } }));
+  }, [bars, reduced, visible]);
+
+  return <div ref={ref} className="executive-preview" dir="ltr" data-static={reduced} data-paused={!visible}
+    onPointerMove={event => {
+      if (event.pointerType !== "mouse" || reduced) return;
+      const bounds = event.currentTarget.getBoundingClientRect();
+      mx.set((event.clientX - bounds.left) / bounds.width * 100);
+      my.set((event.clientY - bounds.top) / bounds.height * 100);
+    }}>
+    <motion.div aria-hidden className="pointer-events-none absolute -inset-8 rounded-[40px]" style={{ background: spotlight }} />
+    <HeroEntrance delay={.15} className="executive-preview-main surface-card">
+      <div className="executive-preview-window"><i aria-hidden /><i aria-hidden /><i aria-hidden /><span>{tc("illustrative")}</span></div>
+      <div className="executive-preview-metrics">{[
+        { label: t("mockTotal"), value: "PKR 4.82M", tone: "text-text" },
+        { label: t("mockPending"), value: "17", tone: "text-warning" },
+        { label: t("mockOutstanding"), value: "PKR 1.26M", tone: "text-copper" },
+      ].map(metric => <div key={metric.label} className="executive-preview-metric"><p className="executive-preview-label" dir="auto">{metric.label}</p><p className={`executive-preview-value tabular ltr-data ${metric.tone}`}>{metric.value}</p></div>)}</div>
+      <div className="executive-preview-chart" aria-hidden="true">{BARS.map((height, index) => <motion.div key={index} className="executive-preview-bar" custom={index} initial={false} animate={bars} style={{ height: `${height}%`, opacity: .55 + index * .08 }} />)}</div>
+    </HeroEntrance>
+    <HeroEntrance delay={.4} className="executive-preview-invoice"><div className="executive-invoice-face executive-float surface-card">
+      <span className="executive-invoice-icon"><FileText size={16} /></span><div><p className="executive-invoice-ref ltr-data">EXP-INV-2026-000128</p><p className="executive-approved"><CheckCircle2 size={14} />{t("mockApproved")}</p></div>
+    </div></HeroEntrance>
+    <HeroEntrance delay={.5} className="executive-preview-branch"><div className="executive-branch-face executive-float surface-card">
+      <p dir="auto">{t("mockByBranch")}</p><div className="executive-branch-list">{BRANCHES.map((branch, index) => <div key={branch.code} className="executive-branch-row"><span className="ltr-data">{branch.code}</span><div className="executive-branch-track"><div style={{ width: `${branch.w}%`, background: index === 0 ? "var(--copper)" : "var(--brand)" }} /></div></div>)}</div>
+    </div></HeroEntrance>
+    <HeroEntrance delay={.6} className="executive-preview-pending"><div className="executive-pending-face"><Clock3 size={14} /><span><span className="ltr-data">17</span> · {t("mockPending")}</span></div></HeroEntrance>
+  </div>;
+}

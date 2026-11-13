@@ -1,0 +1,80 @@
+{
+  "app": {
+    "search": {
+      "open": "تلاش",
+      "hint": "تلاش کے لیے کم از کم 2 حروف لکھیں۔",
+      "empty": "آپ کی رسائی میں کوئی مماثل ریکارڈ نہیں۔",
+      "placeholder": {
+        "SUPER_ADMIN": "برانچیں، افراد، وینڈرز، ریکارڈ تلاش کریں…",
+        "USER": "اپنے اخراجات تلاش کریں…",
+        "VENDOR": "اپنی انوائسز اور فراہمی تلاش کریں…"
+      },
+      "kind": {
+        "branch": "برانچ",
+        "employee": "ملازم",
+        "vendor": "وینڈر",
+        "expense": "خرچ",
+        "invoice": "انوائس",
+        "supply": "فراہمی"
+      }
+    },
+    "notifications": {
+      "title": "اطلاعات",
+      "description": "آپ سے متعلق ریکارڈز کی تازہ معلومات۔",
+      "markAllRead": "سب کو پڑھا ہوا نشان زد کریں",
+      "markRead": "پڑھا ہوا نشان زد کریں",
+      "unread": "غیر پڑھی",
+      "empty": "کوئی نئی اطلاع نہیں",
+      "emptyBody": "آپ کے ریکارڈز کی نئی تازہ معلومات یہاں ظاہر ہوں گی۔",
+      "viewItem": "دیکھیں",
+      "types": {
+        "registration_pending": "{name} کی جانب سے نئی {type, select, VENDOR {وینڈر} other {ملازم}} رجسٹریشن جائزے کی منتظر ہے",
+        "account_approved": "آپ کا اکاؤنٹ منظور ہو گیا ہے۔ Expenvia میں خوش آمدید!",
+        "account_infoRequested": "منتظم نے آپ کی رجسٹریشن کے بارے میں مزید معلومات طلب کی ہیں",
+        "branch_assigned": "آپ کو {branch} پر تفویض کیا گیا ہے",
+        "vendor_branchAssigned": "اب آپ {branch} کو سامان فراہم کر سکتے ہیں",
+        "vendor_branchRemoved": "{branch} کے ساتھ آپ کی تفویض ختم ہو گئی ہے",
+        "expense_submitted": "{name} نے خرچ {number} جمع کرایا",
+        "expense_approved": "آپ کا خرچ {number} منظور ہو گیا",
+        "expense_rejected": "آپ کا خرچ {number} مسترد ہو گیا",
+        "expense_revisionRequested": "آپ کے خرچ {number} میں ترمیم مطلوب ہے",
+        "invoice_submitted": "{vendor} نے انوائس {number} جمع کرائی",
+        "invoice_approved": "آپ کی انوائس {number} منظور ہو گئی",
+        "invoice_rejected": "آپ کی انوائس {number} مسترد ہو گئی",
+        "invoice_revisionRequested": "انوائس {number} میں ترمیم مطلوب ہے",
+        "invoice_paymentRecorded": "انوائس {number} کے لیے ادائیگی درج کی گئی",
+        "account_rejected": "آپ کی رجسٹریشن منظور نہیں ہوئی۔",
+        "account_suspended": "آپ کا اکاؤنٹ معطل ہو گیا ہے۔",
+        "account_reactivated": "آپ کا اکاؤنٹ بحال ہو گیا ہے۔",
+        "invoice_submissionConfirmed": "انوائس {number} جمع ہو گئی ہے۔",
+        "invoice_paymentCorrected": "انوائس {number} کی ادائیگی کا اندراج درست کر دیا گیا ہے۔"
+      }
+    },
+    "money": {
+      "currency": "کرنسی"
+    },
+    "time": {
+      "justNow": "ابھی"
+    },
+    "pagination": {
+      "label": "صفحہ بندی",
+      "previous": "پچھلا",
+      "next": "اگلا",
+      "summary": "{total} میں سے {from}–{to}"
+    },
+    "table": {
+      "noResults": "ان فلٹرز سے کوئی ریکارڈ مماثل نہیں",
+      "noResultsBody": "فلٹرز تبدیل کریں یا صاف کریں۔",
+      "clearFilters": "فلٹرز صاف کریں",
+      "all": "تمام"
+    },
+    "confirm": {
+      "title": "کیا آپ کو یقین ہے؟",
+      "irreversible": "یہ اقدام آڈٹ لاگ میں درج ہوتا ہے۔"
+    },
+    "toast": {
+      "saved": "تبدیلیاں محفوظ ہو گئیں",
+      "error": "کچھ غلط ہو گیا۔ براہِ کرم دوبارہ کوشش کریں۔"
+    }
+  }
+}

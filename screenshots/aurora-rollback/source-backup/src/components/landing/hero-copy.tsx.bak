@@ -1,0 +1,33 @@
+"use client";
+import { useEffect, useRef, type ReactNode } from "react";
+import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { motion, useAnimationControls } from "motion/react";
+import { ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useReducedMotion } from "@/components/motion/use-reduced-motion";
+
+/** SSR is fully readable. The short entrance runs once after hydration. */
+export function HeroReveal({ children, delay = 0, className, as = "div" }: { children: ReactNode; delay?: number; className?: string; as?: "div" | "span" }) {
+  const controls = useAnimationControls(), played = useRef(false);
+  const reduced = useReducedMotion();
+  useEffect(() => {
+    if (reduced) { controls.stop(); controls.set({ opacity: 1, y: 0 }); return; }
+    if (played.current) return;
+    played.current = true;
+    void controls.start({ opacity: [.7, 1], y: [12, 0], transition: { duration: .55, delay, ease: [.22, 1, .36, 1] } });
+  }, [controls, delay, reduced]);
+  const Element = as === "span" ? motion.span : motion.div;
+  return <Element initial={false} animate={controls} className={className}>{children}</Element>;
+}
+
+export function HeroCopy() {
+  const t = useTranslations("landing");
+  const lines = t("heroTitle").split(/(?<=[.۔])\s+/u).filter(Boolean);
+  return <div className="hero-copy">
+    <HeroReveal><p className="hero-eyebrow"><span />{t("eyebrow")}</p></HeroReveal>
+    <h1 className="hero-headline font-display">{lines.map((line, i) => <HeroReveal as="span" key={line} delay={.08 + i * .07} className="hero-line">{line}{i < lines.length - 1 ? " " : ""}</HeroReveal>)}</h1>
+    <HeroReveal delay={.28}><p className="hero-description">{t("heroBody")}</p></HeroReveal>
+    <HeroReveal delay={.36}><div className="hero-actions"><Button asChild size="lg"><Link href="/signup">{t("ctaPrimary")}<ArrowRight className="rtl:-scale-x-100" /></Link></Button><Button asChild size="lg" variant="secondary"><a href="#workflow">{t("ctaSecondary")}</a></Button></div></HeroReveal>
+  </div>;
+}

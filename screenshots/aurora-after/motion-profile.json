@@ -1,0 +1,28 @@
+{
+  "motion": "Continuous ribbons, floating invoice, spring pointer depth, scroll atmosphere, one persistent canvas and offscreen preview pause passed",
+  "reduced": "OS and in-app reduced motion retain the full canvas and stop ambient, floating and pointer movement",
+  "profile": {
+    "samples": 149,
+    "medianMs": 33.29999999999927,
+    "p95Ms": 66.59999999999854,
+    "layoutCount": 193,
+    "recalcStyleCount": 199,
+    "scriptSeconds": 0.110093,
+    "taskSeconds": 0.40420300000000003,
+    "context": "5 seconds in local Chromium development build with pointer and scroll input; not an FPS guarantee"
+  },
+  "navigation": {
+    "listenersBefore": {
+      "documents": 2,
+      "nodes": 2844,
+      "jsEventListeners": 717
+    },
+    "listenersAfter": {
+      "documents": 2,
+      "nodes": 1046,
+      "jsEventListeners": 746
+    }
+  },
+  "touch": "Secondary ribbon and light drift disabled on mobile",
+  "errors": []
+}

@@ -1,0 +1,78 @@
+"use client";
+
+import { createContext, useContext, useEffect, useId, useMemo, useRef, type ReactNode } from "react";
+import { motion, useMotionValue, useScroll, useSpring, useTransform, type MotionValue } from "motion/react";
+import { useReducedMotion } from "@/components/motion/use-reduced-motion";
+import "./living-aurora.css";
+
+const AuroraDepth = createContext<{ x: MotionValue<number>; y: MotionValue<number> } | null>(null);
+export const useAuroraDepth = () => useContext(AuroraDepth);
+
+function AuroraRibbon({ id, secondary = false }: { id: string; secondary?: boolean }) {
+  return <g className={`living-ribbon ${secondary ? "living-ribbon-secondary" : "living-ribbon-primary"}`}>
+    {secondary ? <>
+      <path d="M-180 260 C160 30 420 470 800 240 S1390 70 1770 230 L1780 420 C1390 200 1090 430 790 410 S200 200 -180 450Z" fill={`url(#${id}-sage)`} />
+      <path d="M-180 260 C160 30 420 470 800 240 S1390 70 1770 230" fill="none" stroke={`url(#${id}-edge)`} strokeWidth="2" />
+    </> : <>
+      <path d="M-170 670 C220 280 530 1000 910 670 S1430 390 1780 520 L1790 840 C1390 630 1180 1090 850 930 S200 610 -170 1030Z" fill={`url(#${id}-emerald)`} />
+      <path d="M-170 670 C220 280 530 1000 910 670 S1430 390 1780 520 C1400 440 1160 960 860 755 S170 450 -170 710Z" fill={`url(#${id}-copper)`} opacity=".72" />
+      <path d="M-170 710 C190 440 510 1030 900 735 S1440 430 1780 590 L1780 1000 L-170 1160Z" fill={`url(#${id}-fold)`} />
+      <path d="M-170 711 C190 441 510 1031 900 736 S1440 431 1780 591" fill="none" stroke={`url(#${id}-edge)`} strokeWidth="2.5" />
+      <path d="M-150 850 C270 540 560 1180 1030 810 S1510 660 1760 750" fill="none" stroke={`url(#${id}-edge)`} strokeWidth="1" opacity=".5" />
+    </>}
+  </g>;
+}
+
+/** One viewport canvas stays mounted through the whole landing page. All section
+ * atmospheres are translucent overlays; no ribbon animation restarts at a boundary. */
+export function LivingAurora({ children }: { children: ReactNode }) {
+  const id = useId();
+  const root = useRef<HTMLDivElement>(null);
+  const reduced = useReducedMotion();
+  const targetX = useMotionValue(0), targetY = useMotionValue(0);
+  const x = useSpring(targetX, { stiffness: 50, damping: 24, mass: .8 });
+  const y = useSpring(targetY, { stiffness: 50, damping: 24, mass: .8 });
+  const backX = useTransform(x, n => n * -.4);
+  const { scrollYProgress } = useScroll();
+  const scroll = useSpring(scrollYProgress, { stiffness: 70, damping: 25 });
+  const travel = useTransform(scroll, [0, .25, .5, .75, 1], [0, -90, 20, -50, 65]);
+  const scale = useTransform(scroll, [0, .5, 1], [1.08, 1.16, 1.1]);
+  const light = useTransform(scroll, [0, .25, .55, .8, 1], [.78, .45, .6, .32, .85]);
+  const depth = useMemo(() => ({ x, y }), [x, y]);
+  useEffect(() => {
+    const el = root.current;
+    if (!el) return;
+    const fine = matchMedia("(hover: hover) and (pointer: fine)");
+    const reset = () => { targetX.set(0); targetY.set(0); };
+    const move = (event: PointerEvent) => {
+      if (reduced || document.hidden || !fine.matches || event.pointerType !== "mouse") return;
+      targetX.set((event.clientX / innerWidth - .5) * 36);
+      targetY.set((event.clientY / innerHeight - .5) * 24);
+    };
+    const visibility = () => el.toggleAttribute("data-aurora-paused", document.hidden);
+    if (!reduced) window.addEventListener("pointermove", move, { passive: true });
+    document.documentElement.addEventListener("pointerleave", reset);
+    document.addEventListener("visibilitychange", visibility);
+    visibility(); reset();
+    return () => { window.removeEventListener("pointermove", move); document.documentElement.removeEventListener("pointerleave", reset); document.removeEventListener("visibilitychange", visibility); };
+  }, [reduced, targetX, targetY]);
+  return <AuroraDepth.Provider value={depth}><div ref={root} className="marketing living-page" data-aurora-reduced={reduced}>
+    <div className="living-aurora" aria-hidden="true">
+      <motion.div className="living-scroll-layer" style={reduced ? undefined : { y: travel, scale }}>
+        <motion.svg className="living-ribbons" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" style={reduced ? undefined : { x, y }}>
+          <defs>
+            <linearGradient id={`${id}-emerald`} x1="0" y1="0" x2=".2" y2="1"><stop stopColor="var(--living-shade)" /><stop offset=".3" stopColor="var(--living-green)" /><stop offset=".52" stopColor="var(--living-pearl)" /><stop offset=".62" stopColor="var(--living-green)" /><stop offset="1" stopColor="var(--living-shade)" /></linearGradient>
+            <linearGradient id={`${id}-fold`} x1=".2" y1="0" x2=".6" y2="1"><stop stopColor="var(--living-pearl)" /><stop offset=".16" stopColor="var(--living-green)" /><stop offset=".44" stopColor="var(--living-shade)" /><stop offset="1" stopColor="var(--living-green)" /></linearGradient>
+            <linearGradient id={`${id}-sage`} x1="0" y1="0" x2="1" y2=".8"><stop stopColor="var(--living-green)" stopOpacity=".1" /><stop offset=".45" stopColor="var(--living-pearl)" stopOpacity=".8" /><stop offset=".6" stopColor="var(--living-green)" stopOpacity=".65" /><stop offset="1" stopColor="var(--living-shade)" stopOpacity=".2" /></linearGradient>
+            <linearGradient id={`${id}-copper`} x1="0" y1="0" x2="1" y2="1"><stop stopColor="var(--copper)" /><stop offset=".38" stopColor="var(--living-gold)" /><stop offset=".52" stopColor="var(--copper)" /><stop offset=".72" stopColor="var(--living-gold)" /><stop offset="1" stopColor="var(--copper)" /></linearGradient>
+            <linearGradient id={`${id}-edge`} x1="0" y1="0" x2="1" y2="0"><stop stopColor="var(--living-pearl)" stopOpacity="0" /><stop offset=".45" stopColor="var(--living-pearl)" /><stop offset=".7" stopColor="var(--living-gold)" /><stop offset="1" stopColor="var(--living-pearl)" stopOpacity=".1" /></linearGradient>
+          </defs>
+          <AuroraRibbon id={id} secondary /><AuroraRibbon id={id} />
+        </motion.svg>
+      </motion.div>
+      <motion.div className="living-light-depth" style={reduced ? undefined : { x: backX, opacity: light }}><div className="living-light" /></motion.div>
+      <div className="living-grain" /><div className="living-reading-veil" />
+    </div>
+    {children}
+  </div></AuroraDepth.Provider>;
+}

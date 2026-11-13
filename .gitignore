@@ -1,0 +1,16 @@
+node_modules/
+.next/
+.next-*/
+out/
+coverage/
+storage/
+playwright-report/
+test-results/
+src/generated/
+.env
+.env.local
+*.tsbuildinfo
+next-env.d.ts
+.DS_Store
+.demo-credentials.txt
+.local-demo-logins.txt

@@ -1,0 +1,63 @@
+/* Brand sizes describe visible wordmarks; source artwork has only 6px margins. */
+.brand-logo-navigation{width:166px;}.brand-logo-sidebar{width:158px;}.brand-logo-auth{width:190px;}.brand-logo-footer{width:151px;}
+@media(max-width:1023px){.brand-logo-navigation{width:149px;}}
+@media(max-width:639px){.brand-logo-navigation{width:132px;}.brand-logo-auth{width:180px;}}
+@media(max-width:359px){.brand-logo-navigation{width:122px;}}
+@media(max-width:359px){.marketing>header .nav-access{max-width:104px;height:auto;min-height:38px;white-space:normal;line-height:1.35;padding-inline:9px;}}
+
+/* Semantic Urdu UI scale. Numeric runs explicitly retain the Latin scale below. */
+html[lang="ur"]{
+ --type-caption:15px;--type-label:16px;--type-control:17px;--type-navigation:17px;--type-copy:18px;--type-card-copy:17px;--type-card-heading:21px;--type-table:16px;
+ --text-2xs:.9375rem;--text-2xs--line-height:1.6rem;
+ --text-xs:.9375rem;--text-xs--line-height:1.65rem;
+ --text-sm:1rem;--text-sm--line-height:1.75rem;
+ --text-base:1.125rem;--text-base--line-height:1.9rem;
+ --text-lg:1.1875rem;--text-lg--line-height:2rem;
+ --text-body:1.125rem;--text-body--line-height:1.95rem;
+ --text-title:1.25rem;--text-title--line-height:2rem;
+ --text-section:1.375rem;--text-section--line-height:2.2rem;
+ --text-page:2rem;--text-page--line-height:3rem;
+ --text-page-lg:2.25rem;--text-page-lg--line-height:3.2rem;
+}
+html[lang="ur"] body{font-synthesis:none;}
+html[lang="ur"] :is(h1,h2,h3,h4,.font-display){font-family:var(--font-urdu);line-height:1.65;letter-spacing:0;font-weight:600;}
+html[lang="ur"] :is(p,label,button,a,th,td,legend,[role="menuitem"]){letter-spacing:0;}
+html[lang="ur"] .marketing :is(h1.font-display,h2.font-display),html[lang="ur"] .auth-layout .font-display{font-family:var(--font-urdu-display);line-height:1.85;}
+html[lang="ur"] .marketing .hero-headline{font-size:clamp(2.5rem,4.4vw,4rem);line-height:1.85;letter-spacing:0;}
+html[lang="ur"] .marketing h2{font-size:clamp(1.75rem,2.3vw,2.125rem);}
+html[lang="ur"] .marketing .hero-description{font-size:var(--type-copy);line-height:1.85;}
+html[lang="ur"] .marketing .hero-eyebrow{font-size:var(--type-caption);line-height:1.7;}
+html[lang="ur"] .marketing>header nav a:not(.ui-button){font-size:var(--type-navigation);}
+html[lang="ur"] .ui-button:not([data-size^="icon"]){font-size:var(--type-control);line-height:1.6;height:auto;min-height:42px;padding-block:7px;white-space:normal;text-align:center;}
+html[lang="ur"] .ui-button[data-size="lg"]{min-height:50px;}
+html[lang="ur"] .ui-control{font-size:var(--type-control);line-height:1.65;min-height:46px;}
+html[lang="ur"] .ui-control::placeholder{color:var(--text-muted);opacity:1;}
+html[lang="ur"] label{font-size:var(--type-label);line-height:1.75;}
+html[lang="ur"] .sidebar-link{font-size:var(--type-navigation);line-height:1.65;padding-block:7px;}
+html[lang="ur"] .sidebar-label{white-space:normal;overflow-wrap:anywhere;}
+html[lang="ur"] th{font-size:var(--type-table);line-height:1.7;}
+html[lang="ur"] td{line-height:1.75;}
+html[lang="ur"] .atelier-metric .metric-label{font-size:var(--type-label);line-height:1.75;}
+html[lang="ur"] .atelier-branch-contact{font-size:var(--type-label);line-height:1.75;}
+html[lang="ur"] .marketing .capability-card h3{font-size:var(--type-card-heading);font-family:var(--font-urdu);line-height:1.7;}
+html[lang="ur"] .marketing .capability-card p{font-size:var(--type-card-copy);line-height:1.85;}
+html[lang="ur"] .marketing .journey-card h3{font-size:var(--type-card-heading);font-family:var(--font-urdu);line-height:1.7;}
+html[lang="ur"] .marketing .journey-card p{font-size:var(--type-card-copy);line-height:1.8;}
+html[lang="ur"] .marketing .journey-intro{font-size:var(--type-copy);line-height:1.8;}
+html[lang="ur"] .marketing :is(.journey-eyebrow,.journey-footnote,.journey-mini-lines>span,.journey-mini-caption){font-size:var(--type-caption);line-height:1.7;letter-spacing:0;}
+html[lang="ur"] .marketing .journey-miniature{min-height:52px;height:auto;}
+html[lang="ur"] .marketing .journey-mini-caption{max-width:90px;}
+html[lang="ur"] .marketing .office-card h4{font-size:var(--type-card-heading);line-height:1.7;}
+html[lang="ur"] .marketing .office-card p{font-size:var(--type-card-copy);line-height:1.8;}
+html[lang="ur"] .marketing :is(.preview-window,.preview-metric p,.preview-chart-heading,.preview-chart-footer,.preview-branch>p){font-size:var(--type-caption);line-height:1.7;}
+html[lang="ur"] .marketing .preview-approved{font-size:var(--type-label);line-height:1.7;}
+html[lang="ur"] .marketing .preview-metric strong{font-size:clamp(.85rem,1.2vw,1.1rem);}
+html[lang="ur"] .marketing .preview-invoice-position{max-width:100%;}
+html[lang="ur"] .marketing .preview-metric{min-width:0;}
+
+/* Identifiers and financial values keep their own metrics and direction. */
+html[lang="ur"] :is(.tabular,.ltr-data){
+ --text-2xs:.75rem;--text-2xs--line-height:1.05rem;--text-xs:.8125rem;--text-xs--line-height:1.2rem;--text-sm:.875rem;--text-sm--line-height:1.35rem;--text-base:1rem;--text-lg:1.125rem;--text-body:.9375rem;--text-body--line-height:1.55rem;--text-section:1.25rem;
+ font-family:var(--font-sans);font-variant-numeric:tabular-nums;unicode-bidi:isolate;
+}
+@media(max-width:767px){html[lang="ur"] .marketing .hero-headline{font-size:clamp(2.5rem,7vw,3rem);}html[lang="ur"] .marketing .journey-inner{padding-inline:16px;}html[lang="ur"] .marketing .journey-item .journey-card{padding:19px;}html[lang="ur"] .marketing .preview-metric strong{font-size:15px;}}

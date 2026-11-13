@@ -1,0 +1,11 @@
+{
+  "src/components/brand/logo.tsx": "45b9274287808f6e71b41d15b137fe7fa957668c8ee66b464188dadac4e0f155",
+  "src/app/urdu-typography.css": "0b6090c0ff537fbcce8fa2b68297fa344f367580e303f8fb579aefad92b65ec4",
+  "src/app/layout.tsx": "420458032e0e125b1649556fb2bc23a9593968d125a54c19034c55108a718b6b",
+  "src/components/shell/app-shell.tsx": "2426bc7c5f43da31b1c80db0a3fce89c9f015403cf512e3c07e39f3df0c7652e",
+  "src/components/landing/workflow-journey.tsx": "8d3cda07a0b48c38e52381d4c9f310d0cbee458213fcee2146dc44d8ebba7bc5",
+  "src/components/landing/workflow-journey.css": "31493e4cf87fa1abab84dfaaf70bc1f287028c9b5a93b84ceadd5054144a332f",
+  "src/app/landing-refinement.css": "bb667ecd23de7d7a8880d9e64a23e3d20258cfa42e3c578cb07e7809adc39749",
+  "src/app/atelier.css": "d386ddf5a1811fe27c35aaa37f9c9b109ac3d982b9cc6db981f96c918ea85898",
+  "src/components/ambient/ambient-background.tsx": "c15094b16f2855c9827498cf529ca69e2649a3ec6bdd6989b169b6d87fbd6418"
+}
