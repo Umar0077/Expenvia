@@ -14,3 +14,7 @@ next-env.d.ts
 .DS_Store
 .demo-credentials.txt
 .local-demo-logins.txt
+
+# Runtime logs
+*.stdout.log
+*.stderr.log
